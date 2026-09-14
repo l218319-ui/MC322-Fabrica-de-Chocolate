@@ -1,8 +1,8 @@
 public class MaquinaInspecaoQualidade extends Maquina {
 
     // Construtor:
-    public MaquinaInspecaoQualidade(String nome, float probabilidadeFalha, float custoOperacao) {
-        super(nome, 100.0, probabilidadeFalha, custoOperacao);
+    public MaquinaInspecaoQualidade(String nome, float custoOperacao) {
+        super(nome, 100.0, 0.2f, custoOperacao);
     }
 
     public String getTipo() {

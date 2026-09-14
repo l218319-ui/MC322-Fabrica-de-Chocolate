@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -6,8 +7,10 @@ public class Main {
     static Produto p1;
     static Produto p2;
     static Produto p3;
-    static Maquina m1;
-    static Esteira e1;
+    static GerenciadorProducao gp;
+    //static Maquina m1;
+    //static Esteira e1;
+    static ArrayList<Demanda> demandas;
 
     public static void main(String[] args) throws Exception {
         System.out.println(
@@ -32,7 +35,7 @@ public class Main {
 
     // Instanciação dos objetos + informações na telinha:
     private static void inicializa() {
-        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 10, "kg", 1);
+        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 1000, "kg", 1);
         System.out.println("Matéria-prima: " + mp1.getId() + " - " + mp1.getNome());
         System.out.println("Quantidade: " + mp1.getQuantidade() + " " + mp1.getUnidade());
 
@@ -44,14 +47,27 @@ public class Main {
         p3 = new ChocolateSeboso(0003, "Bombom amargo");
         System.out.println(p3.getId() + " - " + p3.getNome() + " (demanda: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
-        //m1 = new Maquina("Batedeira", false, 50);
-        System.out.println("\nMáquina inicializada:" + m1.getNome());
+        ArrayList<Maquina> maquinas = new ArrayList<>();
+        Maquina m1 = new MaquinaDeProcessamento("Batedeira", 2, 1000);
+        Maquina m2 = new MaquinaEmbaladora("Embaladora", 1, 1000);
+        Maquina m3 = new MaquinaInspecaoQualidade("Fiscal", 3);
 
-        e1 = new Esteira("",false,50);
+        gp = new GerenciadorProducao(new ArrayList<Demanda>(), new ArrayList<Produto>(), maquinas, mp1, 1000.0D); 
+        Demanda d1 = new Demanda(p1, 10);
+        Demanda d2 = new Demanda(p2, 10);
+        Demanda d3 = new Demanda(p3, 10);
+        gp.registrarDemanda(d1);
+        gp.registrarDemanda(d2);
+        gp.registrarDemanda(d3);
+
+        //m1 = new Maquina("Batedeira", false, 50);
+        //System.out.println("\nMáquina inicializada:" + m1.getNome());
+
+        //e1 = new Esteira("",false,50);
     }
 
     // Seleção de produtos + processo de produção:
-    private static void iniciarProdução() {
+    /*private static void iniciarProdução() {
         Scanner teclado = new Scanner(System.in);
         System.out.println("\nSelecione o produto (1-3): ");
         int produtoEscolhido = teclado.nextInt();
@@ -69,7 +85,7 @@ public class Main {
             return;
         }
 
-        System.out.println("[OK] Verificando a disponibilidade de Matéria-prima...");
+        System.out.println("[OK] Verificando a disponibilidade de Matéria-prima...");*/
 
         /*if (m1.temEstoqueSuficiente(mp1, p, quantidadeParaProducao)) {
             System.out.println("[OK] A demanda de " + quantidadeParaProducao + " produtos pode ser atendida.");
@@ -106,7 +122,7 @@ public class Main {
             System.out.println("Estoque restante de "+mp1.getNome()+": "+mp1.getQuantidade()+" "+mp1.getUnidade());
         }*/
 
-    };
+    //};
 
     //consulta o estoque de materias primas(só tem uma no caso)??
     private static void consultarEstoque() {
@@ -119,18 +135,54 @@ public class Main {
                 "\n============================================\n" +
                 "MENU PRINCIPAL\n" +
                 "============================================\n" +
-                "1 - Iniciar produção\n" +
-                "2 - Consultar estoque\n" +
-                "3 - Sair\n" +
+                "BUDGET ATUAL: "+ gp.getOrçamento() +"\n"+
+
+                "ATUALIZAR DEMANDAS\n"+
+                "1 - Atualizar demanda de Barra de chocolate\n"+
+                "2 - Atualizar demanda de Ovo de Páscoa\n"+
+                "3 - Atualizar demanda de Bombom amargo\n"+
+                "FABRICAR\n"+
+                "4 - Fabricar Barra de chocolate\n"+
+                "5 - Fabricar Ovo de Páscoa\n"+
+                "6 - Fabricar Bombom amargo\n"+
+                "CONSULTAR\n"+
+                "7 - Ver armazém\n"+
+                "8 - Ver estoque de matéria-prima\n"+
+                "COMPRAR MATÉRIA-PRIMA\n"+
+                "9 - Comprar matéria-prima\n"+
+                "0 - SAIR\n"+
                 "Escolha:");
 
         Scanner teclado = new Scanner(System.in);
         int op = teclado.nextInt();
         if (op == 1) {
-            iniciarProdução();
+            System.out.println("Entre com a nova demanda:");
+            int dem = teclado.nextInt();
+            gp.atualizarDemanda(0, dem);
         } else if (op == 2) {
-            consultarEstoque();
+            System.out.println("Entre com a nova demanda:");
+            int dem = teclado.nextInt();
+            gp.atualizarDemanda(1, dem);
         } else if (op == 3) {
+            System.out.println("Entre com a nova demanda:");
+            int dem = teclado.nextInt();
+            gp.atualizarDemanda(2, dem);
+        } else if (op == 4) {
+            gp.fabricarDemanda(0);
+        } else if (op == 5) {
+            gp.fabricarDemanda(1);
+        } else if (op == 6) {
+            gp.fabricarDemanda(2);
+        } else if (op == 7) {
+            gp.exibirArmazem();
+        } else if (op == 8) {
+            System.out.println("Quantidade de matéria-prima em estoque: " + mp1.getQuantidade());
+        } else if (op == 9) {
+            System.out.println("Entre com a quantidade de matéria-prima a ser comprada:");
+            double qtd1 = teclado.nextDouble();
+            gp.comprarMateriaPrima(qtd1);
+        } else if (op == 0) {
+            System.out.println("Saindo...");
             System.exit(0);
         } else {
             System.out.println("Opção inválida! Tente novamente.");

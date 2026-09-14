@@ -62,4 +62,5 @@ public abstract class Produto {
     public static int getTotalProdutosFabricados() {
         return totalProdutosFabricados;
     }
+
 }

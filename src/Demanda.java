@@ -1,11 +1,11 @@
 public class Demanda {
 
-    private String tipoProduto; // String com o tipo ou nome do produto demandado;
+    private Produto tipoProduto; // String com o tipo ou nome do produto demandado;
     private long quantidadeProdutos; // Quantidade de produtos;
     private boolean atendida; // Status da demanda.
 
     // Construtor:
-    public Demanda(String tipoProduto, long quantidadeProdutos) {
+    public Demanda(Produto tipoProduto, long quantidadeProdutos) {
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidadeProdutos;
         this.atendida = false;
@@ -16,8 +16,8 @@ public class Demanda {
         this.quantidadeProdutos = quantidade;
     }
 
-    public double calcularMateriaPrimaNecessaria(Produto produto) {
-        double MateriaPrimaNecessaria = produto.getQuantidadeMateriaPrimaNecessaria() * this.quantidadeProdutos;
+    public double calcularMateriaPrimaNecessaria() {
+        double MateriaPrimaNecessaria = tipoProduto.getQuantidadeMateriaPrimaNecessaria() * this.quantidadeProdutos;
         return MateriaPrimaNecessaria;
     }
 
@@ -27,7 +27,7 @@ public class Demanda {
     }
 
     // Getters q nn vou usar por enquanto, mas deixei aí pra parar com o aviso de The value of the field is not used:
-    public String getTipoProduto() {
+    public Produto getTipoProduto() {
         return tipoProduto;
     }
 

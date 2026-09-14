@@ -19,6 +19,7 @@ public class GerenciadorProducao {
     }
 
     // Métodos:
+
     public void registrarDemanda(Demanda demanda) {
         demandas.add(demanda);
     }
@@ -32,20 +33,49 @@ public class GerenciadorProducao {
         }
 
     }
-
-    //falta essa merda aqui 
+ 
     public void fabricarDemanda(int indice) {
         if (indice < 0 || indice >= demandas.size()) {//verifica se o indice é válido 
             System.out.println("[ERRO] Índice de demanda inválido!");
             return;
         }
+        Demanda demanda = demandas.get(indice);
+
+        long qtd = demanda.getQuantidadeProdutos();
+
+        Produto produtoDem = demanda.getTipoProduto();
+
+        double mpNecessaria = produtoDem.getQuantidadeMateriaPrimaNecessaria() * qtd;
+
+
+        if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) {
+            System.out.println("[ERRO] Matéria-prima ou orçamento insuficiente!");
+            return;
+        }
+
+        this.orçamento -= calcularCustoProducao(indice);
+        materiaPrima.consumir(mpNecessaria);
+
+        for (int i = 1; i <= qtd; i++) {
+            for (Maquina m : maquinas) {
+                m.ligar();
+                m.processar(produtoDem);
+                m.desligar();
+            }
+                produtosFabricados.add(produtoDem);
+        }
+
+        demanda.atender();
+        System.out.println("Fabricação concluída!");
     }
+
 
     public void comprarMateriaPrima(double quantidade){
         if(this.orçamento < (materiaPrima.getCustoPorLote()*quantidade)){//se nn tem dinheiro p/ transação
             System.out.println("[ERRO]  Não há dinheiro suficiente para essa transação!");
         } else {
             materiaPrima.adicionarEstoque(quantidade);
+            this.orçamento -= materiaPrima.getCustoPorLote()*quantidade;
             System.out.println("Compra realizada com sucesso!");
         }
     }
@@ -58,21 +88,20 @@ public class GerenciadorProducao {
             return;
         } else {
             for (i = 0; i < produtosFabricados.size(); i++) {
-                System.out.println("- [" + produtosFabricados.get(i).getNome() + "] ID: " + produtosFabricados.get(i).getId() + " | Qualidade: " + produtosFabricados.get(i).getQualidade()
-                        + " | Status: " + produtosFabricados.get(i).getStatus());
+                System.out.println("- [" + produtosFabricados.get(i).getNome() + "] ID: " + produtosFabricados.get(i).getId() + " | Qualidade: " + produtosFabricados.get(i).getQualidade());
             }
         }
     }
 
     // custo total = custo de funcionamento das máquinas + matéria necessaria pra
     // cada demanda * custo da mp
-    private double calcularCustoProducao(Produto produto, Demanda demanda) { // calcula o custo de produção de uma demanda
+    private double calcularCustoProducao(int indice) { // calcula o custo de produção de uma demanda
         int i;
         double custo = 0.0;
         for (i = 0; i < maquinas.size(); i++) {
             custo += maquinas.get(i).getCustoOperacao();
         }
-        custo += produto.getQuantidadeMateriaPrimaNecessaria() * demanda.getQuantidadeProdutos() * materiaPrima.getCustoPorLote();
+        custo += demandas.get(indice).calcularMateriaPrimaNecessaria() * materiaPrima.getCustoPorLote();
         return custo;
     }
 
