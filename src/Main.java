@@ -21,7 +21,7 @@ public class Main {
                     "Bem-vindos à nossa fábrica de chocolates!\n" + 
                     "Uma fábrica feita para transformar chocolate em experiências mágicas.\n" + 
                     "Descubra, experimente e deixe a imaginação te levar!\n" + 
-                    "Desenvolvido por: Pietra e Laura\n" + 
+                    "Desenvolvido por: Laura Póvoas\n" + 
                     "==============================================\n");
         System.out.println(
                 "==============================================\n" +
@@ -41,11 +41,11 @@ public class Main {
 
         System.out.println("\nProdutos disponíveis:");
         p1 = new ChocolatePremium(0001, "Barra de chocolate");
-        System.out.println(p1.getId() + " - " + p1.getNome() + " (demanda: " + p1.getQuantidadeMateriaPrimaNecessaria() + " kg)");
+        System.out.println(p1.getId() + " - " + p1.getNome() + " (Matéria-prima necessária: " + p1.getQuantidadeMateriaPrimaNecessaria() + " kg)");
         p2 = new ChocolateMeiaBoca(0002, "Ovo de Páscoa");
-        System.out.println(p2.getId() + " - " + p2.getNome() + " (demanda: " + p2.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p3 = new ChocolateSeboso(0003, "Bombom amargo");
-        System.out.println(p3.getId() + " - " + p3.getNome() + " (demanda: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
+        System.out.println(p2.getId() + " - " + p2.getNome() + " (Matéria-prima necessária: " + p2.getQuantidadeMateriaPrimaNecessaria() + " kg)");
+        p3 = new ChocolateSeboso(0003, "Bombom de guarda-chuva");
+        System.out.println(p3.getId() + " - " + p3.getNome() + " (Matéria-prima necessária: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
         ArrayList<Maquina> maquinas = new ArrayList<>();
         Maquina m1 = new MaquinaDeProcessamento("Batedeira", 2, 1000);

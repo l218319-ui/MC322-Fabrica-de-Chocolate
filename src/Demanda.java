@@ -1,6 +1,6 @@
 public class Demanda {
 
-    private Produto tipoProduto; // String com o tipo ou nome do produto demandado;
+    private Produto tipoProduto; //Nome do produto demandado;
     private long quantidadeProdutos; // Quantidade de produtos;
     private boolean atendida; // Status da demanda.
 
