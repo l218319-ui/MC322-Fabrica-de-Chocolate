@@ -1,20 +1,32 @@
 public abstract class Produto {
-    long id;                               // Identificador ́unico do produto;
-    String nome;                           // Nome ou tipo do produto;
-    boolean status;                        // Estado atual do produto na linha de produção;
-    long quantidadeMateriaPrimaNecessaria; // Quantidade de matéria-prima necessária para produzir uma unidade deste produto.
-    float qualidade; //Qualidade do produto (0.0 a 1.0);
-    float probabilidadeFalhaAcumulada; //Acumula a chance de falha ao passar pelas maquinas;
-    static int totalProdutosFabricados = 0; //Atributo estático para contabilizar instÂcias geradas.
 
+    private long id; // Identificador ́unico do produto;
+    private String nome; // Nome ou tipo do produto;
+    private String status; // Estado atual do produto na linha de produção;
+    private double quantidadeMateriaPrimaNecessaria; // Quantidade de matéria-prima necessária para produzir uma unidade
+    private float qualidade; // Qualidade do produto (0.0 a 1.0);
+    private float probabilidadeFalhaAcumulada; // Acumula a chance de falha ao passar pelas maquinas;
+    private static int totalProdutosFabricados = 0;// Atributo estático para contabilizar instÂcias geradas.
 
+    // Construtor:
+    public Produto(int id, String nome, double quantidadeMateriaPrimaNecessaria, float qualidade) {
+        this.id = id;
+        this.nome = nome;
+        this.status = "Não processado";
+        this.quantidadeMateriaPrimaNecessaria = quantidadeMateriaPrimaNecessaria;
+        this.qualidade = qualidade;
+        this.probabilidadeFalhaAcumulada = 0.0f;
+        totalProdutosFabricados++;
+    }
 
-    public abstract void processar(); //Define o processamento espec ́ıfico;
+    // Métodos Abstratos:
+    public abstract void processar();
 
-    public abstract int calcularTempoProducao(); //Tempo de producão;
+    public abstract float calcularTempoProducao();
 
-    public abstract String getTipo(); //Retorna o tipo do produto.
+    public abstract String getTipo();
 
+    // Métodos Concretos:
     public long getId() {
         return this.id;
     }
@@ -23,11 +35,11 @@ public abstract class Produto {
         return this.nome;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return this.status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -35,15 +47,19 @@ public abstract class Produto {
         return qualidade;
     }
 
-    public void setQualidade(float qualidade) {
-        this.qualidade = qualidade;
-    }
-
-    public long getQuantidadeMateriaPrimaNecessaria() {
+    public double getQuantidadeMateriaPrimaNecessaria() {
         return quantidadeMateriaPrimaNecessaria;
     }
-    
-    public void aumentarProbabilidadeFalha(float fator){
-        this.probabilidadeFalhaAcumulada = this.probabilidadeFalhaAcumulada * fator;
+
+    public void aumentarProbabilidadeFalha(float fator) {
+        this.probabilidadeFalhaAcumulada += fator;
+    }
+
+    public float getProbabilidadeFalhaAcumulada() {
+        return probabilidadeFalhaAcumulada;
+    }
+
+    public static int getTotalProdutosFabricados() {
+        return totalProdutosFabricados;
     }
 }

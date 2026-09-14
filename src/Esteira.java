@@ -3,6 +3,7 @@ public class Esteira {
     private boolean emMovimento; // Indica se a esteira está em funcionamento;
     private long capacidadeMaxima; // Capacidade máxima de peso ou volume que a esteira pode transportar.
 
+    // Construtor:
     public Esteira(String item, boolean emMovimento, long capacidadeMaxima) {
         this.item = item;
         this.emMovimento = emMovimento;
@@ -24,14 +25,14 @@ public class Esteira {
     }
 
     // Coloca um item na esteira:
-    public boolean adicionarItem(String nome, long demandaDeProduto, Produto produto) {
-        long demandaDeMateriaPrima = produto.getQuantidadeMateriaPrimaNecessaria() * demandaDeProduto;
+    public boolean adicionarItem(String nome, double demandaDeProduto, Produto produto) {
+        double demandaDeMateriaPrima = produto.getQuantidadeMateriaPrimaNecessaria() * demandaDeProduto;
         if (!this.emMovimento) {
-            System.out.println("A esteira está parada. Ligue antes de adicionar um item!");
+            System.out.println("[ERRO]  A esteira está parada. Ligue antes de adicionar um item!");
             return false;
         }
         if (this.item != null && !this.item.isEmpty()) {
-            System.out.println("A esteira já contém um item e não aceita outro!");
+            System.out.println("[ERRO]  A esteira já contém um item e não aceita outro!");
             return false;
         }
 
@@ -48,7 +49,7 @@ public class Esteira {
     // Remove e retorna o item da esteira:
     public String removerItem() {
         if (this.item == null || this.item.isEmpty()) {
-            System.out.println("Não há item para ser removido da esteira!");
+            System.out.println("[ERRO]  Não há item para ser removido da esteira!");
             return null;
         } else {
             String itemRemovido = this.item;
@@ -58,7 +59,7 @@ public class Esteira {
     }
 
     // Verifica se a esteira suporta o peso/volume do item:
-    public boolean verificarCapacidade(long peso) {
+    public boolean verificarCapacidade(double peso) {
         return peso <= this.capacidadeMaxima;
     }
 }

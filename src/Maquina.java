@@ -1,16 +1,31 @@
-public class Maquina {
-    private String nome;            // Nome da máquina;
-    private boolean ligada;         // Indica se a máquina está ligada;
-    private long capacidadeMaxima;  // Capacidade máxima de processamento por ciclo.
+import java.util.Random;
 
-    public Maquina(String nome, boolean ligada, long capacidadeMaxima) {
+public abstract class Maquina {
+
+    private String nome; // Nome da máquina;
+    private boolean ligada; // Indica se a máquina está ligada;
+    private double capacidadeMaxima; // Capacidade máxima de processamento por ciclo;
+    private float probabilidadeFalha; // Chance de falha;
+    private float custoOperacao; // Custo por operação.
+    protected Random random;
+
+    // Construtor:
+    public Maquina(String nome, double capacidadeMaxima, float probabilidadeFalha,
+            float custoOperacao) {
         this.nome = nome;
         this.ligada = false;
         this.capacidadeMaxima = capacidadeMaxima;
+        this.probabilidadeFalha = probabilidadeFalha;
+        this.custoOperacao = custoOperacao;
+        this.random = new Random();
     }
 
-    //Métodos:
+    // Métodos Abstratos:
+    public abstract void processar(Produto produto);// ainda nn sei oq colocar dentro disso aqui
 
+    public abstract String getTipo();// Retorna o tipo da máquina.
+
+    // Métodos Concretos:
     // Liga a máquina:
     public void ligar() {
         this.ligada = true;
@@ -21,42 +36,27 @@ public class Maquina {
         this.ligada = false;
     }
 
-    // Transforma a matéria-prima em produto, recebendo como parâmetros a matéria-prima produto e a demanda necessária:
-    public void processar(MateriaPrima materiaPrima, Produto produto, long demandaDeProduto) {
-        if (!this.estaLigada()) {
-            System.out.println("Não é possível processar, pois a máquina está desligada!");
-        } else {
-            // quantidade de matéria-prima necessária para fabricar a demanda de produto requerida:
-            long demandaDeMateriaPrima = produto.getQuantidadeMateriaPrimaNecessaria() * demandaDeProduto;
-
-            if (temEstoqueSuficiente(materiaPrima, produto, demandaDeProduto)) {
-                materiaPrima.consumir(demandaDeMateriaPrima);
-                produto.processar();
-            } else {
-                System.out.println("Não é possível processar essa quantidade de produto pois não há matéria-prima suficiente no estoque!");
-            }
-        }
-    }
-
-    // Faz a verificação de estoque:
-    public boolean temEstoqueSuficiente(MateriaPrima materiaPrima, Produto produto, long demandaDeProduto) {
-        // quantidade de matéria-prima necessária para fabricar a demanda de produto requerida.
-            long demandaDeMateriaPrima = produto.getQuantidadeMateriaPrimaNecessaria() * demandaDeProduto;
-            if (materiaPrima.verificarDisponibilidade(demandaDeMateriaPrima)) {
-                return true;
-            } else {
-                return false;
-            }
-    }
-
-    // Retorna o nome da maquina:
-    public String getNome() {
-        return this.nome;
-    }
-
-    // Retorna se a máquina está ligada:
     public boolean estaLigada() {
         return this.ligada;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
+    public double getCapacidadeMaxima() {
+        return capacidadeMaxima;
+    }
+
+    public float getCustoOperacao() { // custo com energia e manutenção?
+        return this.custoOperacao;
+    }
+
+    // Método protegido para checagem aleatória de falhas:
+    protected boolean verificarFalha() {
+        if (random.nextDouble() < probabilidadeFalha) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -8,7 +8,6 @@ public class Main {
     static Produto p3;
     static Maquina m1;
     static Esteira e1;
-    static EstacaoInspecao i1;
 
     public static void main(String[] args) throws Exception {
         System.out.println(
@@ -38,19 +37,17 @@ public class Main {
         System.out.println("Quantidade: " + mp1.getQuantidade() + " " + mp1.getUnidade());
 
         System.out.println("\nProdutos disponíveis:");
-        p1 = new ChocolateAltaQualidade(1, "Barra de chocolate", false, 2);
+        p1 = new ChocolatePremium(0001, "Barra de chocolate");
         System.out.println(p1.getId() + " - " + p1.getNome() + " (demanda: " + p1.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p2 = new ChocolateMediaQualidade(2, "Ovo de Páscoa", false, 3);
+        p2 = new ChocolateMeiaBoca(0002, "Ovo de Páscoa");
         System.out.println(p2.getId() + " - " + p2.getNome() + " (demanda: " + p2.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p3 = new ChocolateComSebo(3, "Bombom amargo", false, 1);
+        p3 = new ChocolateSeboso(0003, "Bombom amargo");
         System.out.println(p3.getId() + " - " + p3.getNome() + " (demanda: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
-        m1 = new Maquina("Batedeira", false, 50);
+        //m1 = new Maquina("Batedeira", false, 50);
         System.out.println("\nMáquina inicializada:" + m1.getNome());
 
         e1 = new Esteira("",false,50);
-
-        i1 = new EstacaoInspecao(false, 0);
     }
 
     // Seleção de produtos + processo de produção:
@@ -74,7 +71,7 @@ public class Main {
 
         System.out.println("[OK] Verificando a disponibilidade de Matéria-prima...");
 
-        if (m1.temEstoqueSuficiente(mp1, p, quantidadeParaProducao)) {
+        /*if (m1.temEstoqueSuficiente(mp1, p, quantidadeParaProducao)) {
             System.out.println("[OK] A demanda de " + quantidadeParaProducao + " produtos pode ser atendida.");
 
             e1.ligar();
@@ -90,7 +87,7 @@ public class Main {
 
             System.out.println("[OK] Máquina processando " + quantidadeParaProducao * p.getQuantidadeMateriaPrimaNecessaria()
                     + " kg " + mp1.getNome());
-            m1.processar(mp1, p, quantidadeParaProducao);
+            //m1.processar(mp1, p, quantidadeParaProducao);
 
             System.out.println("[OK] Produto " + p.getId() + " - " + p.getNome() + " criado.");
 
@@ -107,7 +104,7 @@ public class Main {
                     "PRODUÇÃO CONCLUÍDA COM SUCESSO! :)\n" +
                     "============================================\n");
             System.out.println("Estoque restante de "+mp1.getNome()+": "+mp1.getQuantidade()+" "+mp1.getUnidade());
-        }
+        }*/
 
     };
 
