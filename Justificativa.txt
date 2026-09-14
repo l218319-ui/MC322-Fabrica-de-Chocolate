@@ -1,0 +1,7 @@
+Nós, Pietra e Laura, resolvemos desenvolver uma fábrica de chocolate devido ao nosso amor mútuo pelo doce, além disso é um tema bastante interessante sob a perspectiva de engenharia, 
+gostaríamos de explorar temas como segurança alimentar, qualidade nutricional e contaminação cruzada.
+
+Além disso, ficou claro para nós desde o começo o potencial de expansão desse negocio, com uma fábrica de chocolate poderíamos começar oferecendo doces simples de chocolate, como 
+bombons e ovos de páscoa, e expandir para bolachas cobertas de chocolate(envolveria desenvolver um processo para a fabricação de bolachas e depois uma maneira de adicionar chocolate
+a elas), panetones trufados, e outros doces que levam chocolate que tenham um processo de fabricação mais complexos, transformando nossa simples fabrica de chocolate em uma
+verdadeira indústria.
