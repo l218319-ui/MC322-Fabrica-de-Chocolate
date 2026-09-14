@@ -33,7 +33,8 @@ public class GerenciadorProducao {
         }
 
     }
- 
+
+    // Esse método aqui calcula se tem orçamento 
     public void fabricarDemanda(int indice) {
         if (indice < 0 || indice >= demandas.size()) {//verifica se o indice é válido 
             System.out.println("[ERRO] Índice de demanda inválido!");
@@ -48,14 +49,15 @@ public class GerenciadorProducao {
         double mpNecessaria = produtoDem.getQuantidadeMateriaPrimaNecessaria() * qtd;
 
 
-        if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) {
+        if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) {//verifica se tem dinheiro ou mat.prim. suf.
             System.out.println("[ERRO] Matéria-prima ou orçamento insuficiente!");
             return;
         }
 
-        this.orçamento -= calcularCustoProducao(indice);
-        materiaPrima.consumir(mpNecessaria);
+        this.orçamento -= calcularCustoProducao(indice);//tira do orçamento o custo da prod.
+        materiaPrima.consumir(mpNecessaria);//tira da mat.prim. o custo da prod.
 
+        //processamento:
         for (int i = 1; i <= qtd; i++) {
             for (Maquina m : maquinas) {
                 m.ligar();
@@ -66,7 +68,7 @@ public class GerenciadorProducao {
         }
 
         demanda.atender();
-        System.out.println("Fabricação concluída!");
+        System.out.println("Fabricação concluída com sucesso!");
     }
 
 
@@ -74,7 +76,7 @@ public class GerenciadorProducao {
         if(this.orçamento < (materiaPrima.getCustoPorLote()*quantidade)){//se nn tem dinheiro p/ transação
             System.out.println("[ERRO]  Não há dinheiro suficiente para essa transação!");
         } else {
-            materiaPrima.adicionarEstoque(quantidade);
+            materiaPrima.adicionarEstoque(quantidade);//add o q foi comprado
             this.orçamento -= materiaPrima.getCustoPorLote()*quantidade;
             System.out.println("Compra realizada com sucesso!");
         }

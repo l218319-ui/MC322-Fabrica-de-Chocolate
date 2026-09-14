@@ -66,6 +66,7 @@ public class Main {
         //e1 = new Esteira("",false,50);
     }
 
+    //código legado
     // Seleção de produtos + processo de produção:
     /*private static void iniciarProdução() {
         Scanner teclado = new Scanner(System.in);
@@ -123,11 +124,6 @@ public class Main {
         }*/
 
     //};
-
-    //consulta o estoque de materias primas(só tem uma no caso)??
-    private static void consultarEstoque() {
-        System.out.println("O estoque de matéria-prima atual é de "+mp1.getQuantidade()+" "+mp1.getUnidade());
-    };
 
     // Menu com opções númericas:
     private static void menu() {
