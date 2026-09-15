@@ -58,12 +58,12 @@ public class GerenciadorProducao {
         this.orçamento -= calcularCustoProducao(indice);//tira do orçamento o custo da prod.
         materiaPrima.consumir(mpNecessaria);//tira da mat.prim. o custo da prod.
 
-        if (esteira != null) {//integração da esteira na produção
-            esteira.adicionarItem(produtoDem.getNome(), mpNecessaria);
+        if (esteira != null) {
+            esteira.ligar();
+            esteira.adicionarItem(materiaPrima.getNome(), mpNecessaria);
             esteira.removerItem();
             esteira.desligar();
         }
-
         //processamento:
         for (int i = 1; i <= qtd; i++) {
             for (Maquina m : maquinas) {
@@ -73,11 +73,16 @@ public class GerenciadorProducao {
             }
                 produtosFabricados.add(produtoDem);
         }
+        if (esteira != null) {//integração da esteira na produção
+            esteira.ligar();
+            esteira.adicionarItem(produtoDem.getNome(), mpNecessaria);
+            esteira.removerItem();
+            esteira.desligar();
+        }
 
         demanda.atender();
         System.out.println("[OK]  Fabricação concluída com sucesso!");
     }
-
 
     public void comprarMateriaPrima(double quantidade){
         if(this.orçamento < (materiaPrima.getCustoPorLote()*quantidade)){//se nn tem dinheiro p/ transação

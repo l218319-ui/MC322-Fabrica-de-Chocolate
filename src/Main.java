@@ -34,22 +34,22 @@ public class Main {
 
     // Instanciação dos objetos + informações na telinha:
     private static void inicializa() {
-        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 1000, "kg", 1);
+        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 900, "kg", 1);
         System.out.println("Matéria-prima: " + mp1.getId() + " - " + mp1.getNome());
         System.out.println("Quantidade: " + mp1.getQuantidade() + " " + mp1.getUnidade());
 
         System.out.println("\nProdutos disponíveis:");
-        p1 = new ChocolatePremium(0001, "Barra de chocolate");
+        p1 = new ChocolatePremium(1, "Barra de chocolate");
         System.out.println(p1.getId() + " - " + p1.getNome() + " (Matéria-prima necessária: " + p1.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p2 = new ChocolateMeiaBoca(0002, "Ovo de Páscoa");
+        p2 = new ChocolateMeiaBoca(2, "Ovo de Páscoa");
         System.out.println(p2.getId() + " - " + p2.getNome() + " (Matéria-prima necessária: " + p2.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p3 = new ChocolateSeboso(0003, "Bombom de guarda-chuva");
+        p3 = new ChocolateSeboso(3, "Bombom de guarda-chuva");
         System.out.println(p3.getId() + " - " + p3.getNome() + " (Matéria-prima necessária: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
         ArrayList<Maquina> maquinas = new ArrayList<>();
         Maquina m1 = new MaquinaDeProcessamento("Batedeira", 2, 1000);
         Maquina m2 = new MaquinaEmbaladora("Embaladora", 1, 1000);
-        Maquina m3 = new MaquinaInspecaoQualidade("Fiscal", 3);
+        Maquina m3 = new MaquinaInspecaoQualidade("Vigilância Sanitária", 3);
 
         e1 = new Esteira("", 5000);
 
