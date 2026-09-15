@@ -1,5 +1,4 @@
 Eu, Laura Póvoas, escolhi o tema por dois de motivos. Primeiro, amo chocolate e doces em geral. Segundo, adoro o filme "A Fantástica Fábrica de Chocolates". Acho que, 
 para os próximos trabalhos vejo uma possibilidade de expansão nas máquinas e suas funções, gostaria de adicionar receitas e mais matérias-primas aos produtos.
 
-OBS: Se dois trabalhos estiverem com tema igual, é pq eu me separei de minha dupla anterior, que não fez nenhuma linha de código do trabalho um e dois. Mas o tema e os nomes 
-são de minha autoria, assim como os nomes de classes, objetos e produtos.
+OBS: Se dois trabalhos estiverem com tema igual, é pq eu me separei de minha dupla anterior.

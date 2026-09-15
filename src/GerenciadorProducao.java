@@ -6,16 +6,18 @@ public class GerenciadorProducao {
     private ArrayList<Produto> produtosFabricados; // ArrayList do armazém;
     private ArrayList<Maquina> maquinas; // ArrayList de máquinas;
     private MateriaPrima materiaPrima; // Matéria-prima;
+    private Esteira esteira; // Esteira de transporte;
     private double orçamento; // Orçamento disponível.
 
     // Construtor:
     public GerenciadorProducao(ArrayList<Demanda> demandas, ArrayList<Produto> produtosFabricados,
-            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, double orçamento) {
+            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, double orçamento, Esteira esteira) {
         this.demandas = demandas;
         this.produtosFabricados = produtosFabricados;
         this.maquinas = maquinas;
         this.materiaPrima = materiaPrima;
         this.orçamento = orçamento;
+        this.esteira = esteira;
     }
 
     // Métodos:
@@ -27,14 +29,13 @@ public class GerenciadorProducao {
     public void atualizarDemanda(int indice, long quantidade) {
         if (indice >= 0 && indice < demandas.size()) {//verifica os indices
             demandas.get(indice).atualizarQuantidade(quantidade);
-            System.out.println("Demanda atualizada com sucesso!");
+            System.out.println("[OK]  Demanda atualizada com sucesso!");
         } else {
             System.out.println("[ERRO]  Não foi possível atualizar a demanda!");
         }
 
     }
 
-    // Esse método aqui calcula se tem orçamento 
     public void fabricarDemanda(int indice) {
         if (indice < 0 || indice >= demandas.size()) {//verifica se o indice é válido 
             System.out.println("[ERRO] Índice de demanda inválido!");
@@ -50,12 +51,18 @@ public class GerenciadorProducao {
 
 
         if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) {//verifica se tem dinheiro ou mat.prim. suf.
-            System.out.println("[ERRO] Matéria-prima ou orçamento insuficiente!");
+            System.out.println("[ERRO]  Matéria-prima ou orçamento insuficiente!");
             return;
         }
 
         this.orçamento -= calcularCustoProducao(indice);//tira do orçamento o custo da prod.
         materiaPrima.consumir(mpNecessaria);//tira da mat.prim. o custo da prod.
+
+        if (esteira != null) {//integração da esteira na produção
+            esteira.adicionarItem(produtoDem.getNome(), mpNecessaria);
+            esteira.removerItem();
+            esteira.desligar();
+        }
 
         //processamento:
         for (int i = 1; i <= qtd; i++) {
@@ -68,7 +75,7 @@ public class GerenciadorProducao {
         }
 
         demanda.atender();
-        System.out.println("Fabricação concluída com sucesso!");
+        System.out.println("[OK]  Fabricação concluída com sucesso!");
     }
 
 
@@ -78,7 +85,7 @@ public class GerenciadorProducao {
         } else {
             materiaPrima.adicionarEstoque(quantidade);//add o q foi comprado
             this.orçamento -= materiaPrima.getCustoPorLote()*quantidade;
-            System.out.println("Compra realizada com sucesso!");
+            System.out.println("[OK]  Compra realizada com sucesso!");
         }
     }
 
@@ -86,7 +93,7 @@ public class GerenciadorProducao {
         int i;
         System.out.println("------- ARMAZÉM DE PRODUTOS FABRICADOS -------");
         if (produtosFabricados.isEmpty()) {
-            System.out.println("[ERRO]  Nenhum produto no estoque!");
+            System.out.println("[ERRO]  Nenhum produto no estoque!");//erro se nn tem produtos no armazem ainda
             return;
         } else {
             for (i = 0; i < produtosFabricados.size(); i++) {

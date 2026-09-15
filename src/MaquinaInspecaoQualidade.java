@@ -13,7 +13,7 @@ public class MaquinaInspecaoQualidade extends Maquina {
         if (!estaLigada()) {
             System.out.println("[ERRO]  Não é possível inspecionar, pois a máquina está desligada!");
         } else {
-            if (verificarFalha()) {// checagem de falha
+            if (verificarFalha()) {// checagem de falha da maquina
                 produto.setStatus("REJEITADO");
                 System.out.println("[ERRO]  Produto REJEITADO! (Falha na Máquina de Inspeção)");
             }
@@ -23,6 +23,7 @@ public class MaquinaInspecaoQualidade extends Maquina {
             chance de falha) aí a chance de falha fica proporcional com a qualidade*/
             if (random.nextDouble() < rejeicao) {
                 produto.setStatus("REJEITADO");
+                System.out.println("[ERRO]  Produto REJEITADO na inspeção de qualidade!");
             } else {
                 produto.setStatus("APROVADO");
             }
