@@ -1,14 +1,14 @@
 public class Demanda {
 
-    private Produto tipoProduto; //Nome do produto demandado;
+    private Produto tipoProduto; // Nome do produto demandado;
     private long quantidadeProdutos; // Quantidade de produtos;
-    private boolean atendida; // Status da demanda.
+    private StatusDemanda status; // Status da demanda.
 
     // Construtor:
     public Demanda(Produto tipoProduto, long quantidadeProdutos) {
         this.tipoProduto = tipoProduto;
         this.quantidadeProdutos = quantidadeProdutos;
-        this.atendida = false;
+        this.status = StatusDemanda.PENDENTE;
     }
 
     // Métodos:
@@ -23,10 +23,21 @@ public class Demanda {
 
     // Atualiza o status da demanda:
     public void atender() {
-        this.atendida = true;
+        if (this.status != StatusDemanda.CANCELADA) {
+            this.status = StatusDemanda.CONCLUIDA;
+        }
     }
 
-    // Getters q nn vou usar por enquanto, mas deixei aí pra parar com o aviso de The value of the field is not used:
+    // Atualização de status:
+    public void setStatus(StatusDemanda novoStatus) {
+        if (this.status == StatusDemanda.CANCELADA && novoStatus == StatusDemanda.CONCLUIDA) {
+            throw new IllegalStateException("Não é possível concluir uma demanda que está CANCELADA.");
+        }
+        this.status = novoStatus;
+    }
+
+    // Getters q nn vou usar por enquanto, mas deixei aí pra parar com o aviso de
+    // The value of the field is not used:
     public Produto getTipoProduto() {
         return tipoProduto;
     }
@@ -36,7 +47,7 @@ public class Demanda {
     }
 
     public boolean isAtendida() {
-        return atendida;
+        return status == StatusDemanda.CONCLUIDA;
     }
-    
+
 }
