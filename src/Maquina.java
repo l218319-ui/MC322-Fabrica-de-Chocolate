@@ -87,7 +87,7 @@ public abstract class Maquina implements Auditavel {
         this.saude = 100;
     }
 
-    protected void aplicaDesgaste(){
-        
+    protected void aplicaDesgaste(int valor){// Desgaste
+        this.saude -= valor;
     }
 }

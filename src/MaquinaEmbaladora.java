@@ -20,6 +20,9 @@ public class MaquinaEmbaladora extends Maquina {
             if (random.nextDouble() < 0.07) {// a máquina de embalar tem 7% de chance de aumentar a prob. de falha
                 produto.aumentarProbabilidadeFalha(0.05f);
             }
+            // diminuir a saúde da máq!!!!!!!!!
+            int dano = random.nextInt(1,4);
+            aplicaDesgaste(dano);
         }
     }
 

@@ -21,7 +21,8 @@ public class MaquinaDeProcessamento extends Maquina {
                 produto.aumentarProbabilidadeFalha(0.05f);
             }
             // diminuir a saúde da máq!!!!!!!!!
-
+            int dano = random.nextInt(1,4);
+            aplicaDesgaste(dano);
         }
     }
 

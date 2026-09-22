@@ -19,6 +19,11 @@ public class MaquinaInspecaoQualidade extends Maquina {
                 produto.setStatus("REJEITADO");
                 System.out.println("[ERRO]  Produto REJEITADO! (Falha na Máquina de Inspeção)");
             }
+
+            // diminuir a saúde da máq!!!!!!!!!
+            int dano = random.nextInt(1,4);
+            aplicaDesgaste(dano);
+
             //prob. de falha da maq. de inspeção:
             float rejeicao = (produto.getQualidade() * 0.1f) + produto.getProbabilidadeFalhaAcumulada();
             /*pega a qualidade e multiplica por um fator de 0.1 (se nn for assim o produto de alta qualidade tem 90% de
@@ -31,4 +36,4 @@ public class MaquinaInspecaoQualidade extends Maquina {
             }
         }
     }
-}
+}//OBS: CONSERTAR OS STATUS PODICRÊ
