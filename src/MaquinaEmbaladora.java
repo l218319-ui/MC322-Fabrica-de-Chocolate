@@ -11,7 +11,9 @@ public class MaquinaEmbaladora extends Maquina {
 
     public void processar(Produto produto) {
         if (!estaLigada()) {
-            System.out.println("[ERRO]  Não é possível embalar, pois a máquina está desligada!");
+            System.out.println("[ERRO]  Não é possível embalar, pois a máquina " + getNome() + " está desligada!");
+        } else if (this.getSaude() <= 0) {
+            System.out.println("[ERRO]  Não é possível embalar, pois a máquina " + getNome() + " está quebrada!");
         } else {
             produto.setStatus("Produto embalado");
             // aumenta prob de falha:

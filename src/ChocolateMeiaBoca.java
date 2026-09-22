@@ -19,5 +19,3 @@ public class ChocolateMeiaBoca extends Produto {
         return getNome() + " de média Qualidade (alma de sapatênis, uma média entre tênis e sapatilha)";
     }
 }
-
-

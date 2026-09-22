@@ -24,7 +24,7 @@ public class Main {
                     "==============================================\n");
         System.out.println(
                 "==============================================\n" +
-                "PLANTA INDUSTRIAL\n" +
+                "       PLANTA INDUSTRIAL\n" +
                 "==============================================\n");
         inicializa();
         while(true) {

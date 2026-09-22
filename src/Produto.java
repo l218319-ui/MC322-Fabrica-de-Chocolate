@@ -1,4 +1,4 @@
-public abstract class Produto {
+public abstract class Produto implements Auditavel {
 
     private long id; // Identificador ́unico do produto;
     private String nome; // Nome ou tipo do produto;
@@ -19,6 +19,20 @@ public abstract class Produto {
         totalProdutosFabricados++;
     }
 
+    // Da interface Auditável:
+    public String gerarRelatorioDiagnostico() {
+        return "- [Produto " + this.nome + " ] - ID: " + this.id + " - Qualidade: " + this.qualidade + 
+        " - Prob. de Falha Acumulada: " + this.probabilidadeFalhaAcumulada *100;
+    }
+
+    public boolean precisaManutencao() {
+        if (this.probabilidadeFalhaAcumulada >= 0.3f || this.qualidade < 0.7f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     // Métodos Abstratos:
     public abstract void processar();
 

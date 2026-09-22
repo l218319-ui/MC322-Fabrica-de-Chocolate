@@ -8,6 +8,7 @@ public class GerenciadorProducao {
     private MateriaPrima materiaPrima; // Matéria-prima;
     private Esteira esteira; // Esteira de transporte;
     private double orçamento; // Orçamento disponível.
+    EstrategiaProducao estrategiaAtual; 
 
     // Construtor:
     public GerenciadorProducao(ArrayList<Demanda> demandas, ArrayList<Produto> produtosFabricados,
@@ -96,7 +97,9 @@ public class GerenciadorProducao {
 
     public void exibirArmazem() {
         int i;
-        System.out.println("------- ARMAZÉM DE PRODUTOS FABRICADOS -------");
+        System.out.println("==================================================\n" +
+                "       ARMAZÉM DE PRODUTOS FABRICADOS  \n" +
+                "==================================================\n");
         if (produtosFabricados.isEmpty()) {
             System.out.println("[ERRO]  Nenhum produto no estoque!");//erro se nn tem produtos no armazem ainda
             return;
@@ -126,4 +129,13 @@ public class GerenciadorProducao {
     public void exibirOrçamento(){
         System.out.println("O orçamento disponível é " + this.orçamento);
     }
+
+/*setEstrategia(EstrategiaProducao novaEstrategia) – Permite a alteração dinâmica da estratégia
+em tempo de execução;
+• executarProximaProducao() – Utiliza estrategiaAtual.selecionarDemanda(...) para identificar
+a demanda correta e inicia a fabricação;
+• gerarAuditoriaGeral() – Percorre coleções de objetos que implementam Auditavel e exibe um
+relatório consolidado da planta;
+• exibirArmazem() – Lista todos os produtos acabados em estoque, com quantidade, qualidade e lote. */
+
 }

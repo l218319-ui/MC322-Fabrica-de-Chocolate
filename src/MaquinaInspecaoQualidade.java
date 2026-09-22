@@ -11,7 +11,9 @@ public class MaquinaInspecaoQualidade extends Maquina {
 
     public void processar(Produto produto) {
         if (!estaLigada()) {
-            System.out.println("[ERRO]  Não é possível inspecionar, pois a máquina está desligada!");
+            System.out.println("[ERRO]  Não é possível inspecionar, pois a máquina " + getNome() + "está desligada!");
+        } else if (this.getSaude() <= 0) {
+            System.out.println("[ERRO]  Não é possível inspecionar, pois a máquina " + getNome() + " está quebrada!");
         } else {
             if (verificarFalha()) {// checagem de falha da maquina
                 produto.setStatus("REJEITADO");
