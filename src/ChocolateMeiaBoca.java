@@ -1,8 +1,8 @@
 public class ChocolateMeiaBoca extends Produto {
 
     // Construtor:
-    public ChocolateMeiaBoca(int id, String nome) {
-        super(id, nome, 7.0, 0.7f);
+    public ChocolateMeiaBoca(int id, String nome, String lote) {
+        super(id, nome, 7.0, 0.7f, lote);
     }
 
     // Métodos:

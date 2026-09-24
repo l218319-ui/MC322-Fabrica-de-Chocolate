@@ -1,8 +1,8 @@
 public class ChocolatePremium extends Produto {
 
     // Construtor:
-    public ChocolatePremium(int id, String nome) {
-        super(id, nome, 9.0, 0.9f);
+    public ChocolatePremium(int id, String nome, String lote) {
+        super(id, nome, 9.0, 0.9f, lote);
     }
 
     // Métodos:

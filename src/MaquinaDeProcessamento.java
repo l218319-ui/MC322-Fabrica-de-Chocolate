@@ -10,19 +10,24 @@ public class MaquinaDeProcessamento extends Maquina {
     }
 
     public void processar(Produto produto) {
-        if (!this.estaLigada()) {//verifica se está ligada.
+        if (!this.estaLigada()) {// verifica se está ligada.
             System.out.println("[ERRO]  Não é possível processar, pois a máquina " + getNome() + " está desligada!");
+            return;
         } else if (this.getSaude() <= 0) {
-            System.out.println("[ERRO]  Não é possível processar, pois a máquina " + getNome() + " está quebrada!");            
+            System.out.println("[ERRO]  Não é possível processar, pois a máquina " + getNome() + " está quebrada!");
+            return;
         } else {
             produto.processar();
-            // aumenta prob de falha:
-            if (random.nextDouble() < 0.07) {// a máquina de processamento tem 9% de chance de aumentar a prob. de falha
+
+            // diminuir a saúde da máq!!!!!!!!!
+            int dano = random.nextInt(1, 4);
+            aplicaDesgaste(dano);
+
+            // aumenta prob de falha baseada na saúde das máq.:
+            int chanceFalha = (100 - this.getSaude()) / 100;
+            if (random.nextDouble() < chanceFalha) {
                 produto.aumentarProbabilidadeFalha(0.05f);
             }
-            // diminuir a saúde da máq!!!!!!!!!
-            int dano = random.nextInt(1,4);
-            aplicaDesgaste(dano);
         }
     }
 

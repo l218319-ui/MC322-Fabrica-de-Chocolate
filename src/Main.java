@@ -14,8 +14,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println(
                     "==============================================\n" + 
-                    "A NÃO-FANTÁSTICA FÁBRICA DE CHOCOLATES\n" + 
-                    "Chocolate além da imaginação\n" + 
+                    "   A NÃO-FANTÁSTICA FÁBRICA DE CHOCOLATES\n" + 
+                    "   Chocolate além da imaginação\n" + 
                     "==============================================\n" + 
                     "Bem-vindos à nossa fábrica de chocolates!\n" + 
                     "Uma fábrica feita para transformar chocolate em experiências mágicas.\n" + 
@@ -24,7 +24,7 @@ public class Main {
                     "==============================================\n");
         System.out.println(
                 "==============================================\n" +
-                "       PLANTA INDUSTRIAL\n" +
+                "               PLANTA INDUSTRIAL\n" +
                 "==============================================\n");
         inicializa();
         while(true) {
@@ -39,11 +39,11 @@ public class Main {
         System.out.println("Quantidade: " + mp1.getQuantidade() + " " + mp1.getUnidade());
 
         System.out.println("\nProdutos disponíveis:");
-        p1 = new ChocolatePremium(1, "Barra de chocolate");
+        p1 = new ChocolatePremium(1, "Barra de chocolate", "AQ1");
         System.out.println(p1.getId() + " - " + p1.getNome() + " (Matéria-prima necessária: " + p1.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p2 = new ChocolateMeiaBoca(2, "Ovo de Páscoa");
+        p2 = new ChocolateMeiaBoca(2, "Ovo de Páscoa", "MQ1");
         System.out.println(p2.getId() + " - " + p2.getNome() + " (Matéria-prima necessária: " + p2.getQuantidadeMateriaPrimaNecessaria() + " kg)");
-        p3 = new ChocolateSeboso(3, "Bombom de guarda-chuva");
+        p3 = new ChocolateSeboso(3, "Bombom de guarda-chuva", "BQ1");
         System.out.println(p3.getId() + " - " + p3.getNome() + " (Matéria-prima necessária: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
         ArrayList<Maquina> maquinas = new ArrayList<>();
@@ -53,7 +53,7 @@ public class Main {
 
         e1 = new Esteira("", 5000);
 
-        gp = new GerenciadorProducao(new ArrayList<Demanda>(), new ArrayList<Produto>(), maquinas, mp1, 1000.0D, e1); 
+        gp = new GerenciadorProducao(new ArrayList<Demanda>(), new ArrayList<Produto>(), maquinas, mp1, 1000.0D, e1, null); 
         Demanda d1 = new Demanda(p1, 10);
         Demanda d2 = new Demanda(p2, 10);
         Demanda d3 = new Demanda(p3, 10);
@@ -66,7 +66,7 @@ public class Main {
     private static void menu() {
         System.out.println(
                 "\n============================================\n" +
-                "MENU PRINCIPAL\n" +
+                "               MENU PRINCIPAL              \n" +
                 "============================================\n" +
                 "BUDGET ATUAL: "+ gp.getOrçamento() +"\n"+
 
@@ -172,12 +172,6 @@ public class Main {
 
             System.out.println("[OK] Produto "+p.getNome()+" aprovado na inspeção.");
             i1.inspecionar();
-
-            System.out.println(
-                    "============================================\n" +
-                    "PRODUÇÃO CONCLUÍDA COM SUCESSO! :)\n" +
-                    "============================================\n");
             System.out.println("Estoque restante de "+mp1.getNome()+": "+mp1.getQuantidade()+" "+mp1.getUnidade());
         }*/
-
     //};

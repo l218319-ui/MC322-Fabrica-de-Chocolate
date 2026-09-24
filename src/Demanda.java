@@ -31,7 +31,7 @@ public class Demanda {
     // Atualização de status:
     public void setStatus(StatusDemanda novoStatus) {
         if (this.status == StatusDemanda.CANCELADA && novoStatus == StatusDemanda.CONCLUIDA) {
-            throw new IllegalStateException("Não é possível concluir uma demanda que está CANCELADA.");
+            throw new IllegalStateException("[ERRO]   Não é possível concluir uma demanda que está CANCELADA.");
         }
         this.status = novoStatus;
     }

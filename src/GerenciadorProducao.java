@@ -8,17 +8,19 @@ public class GerenciadorProducao {
     private MateriaPrima materiaPrima; // Matéria-prima;
     private Esteira esteira; // Esteira de transporte;
     private double orçamento; // Orçamento disponível.
-    EstrategiaProducao estrategiaAtual;
+    private EstrategiaProducao estrategiaAtual;
 
     // Construtor:
     public GerenciadorProducao(ArrayList<Demanda> demandas, ArrayList<Produto> produtosFabricados,
-            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, double orçamento, Esteira esteira) {
+            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, double orçamento, Esteira esteira,
+            EstrategiaProducao estrategiaAtual) {
         this.demandas = demandas;
         this.produtosFabricados = produtosFabricados;
         this.maquinas = maquinas;
         this.materiaPrima = materiaPrima;
         this.orçamento = orçamento;
         this.esteira = esteira;
+        this.estrategiaAtual = null;
     }
 
     // Métodos:
@@ -31,10 +33,11 @@ public class GerenciadorProducao {
         if (indice >= 0 && indice < demandas.size()) {// verifica os indices
             demandas.get(indice).atualizarQuantidade(quantidade);
             System.out.println("[OK]  Demanda atualizada com sucesso!");
+            return;
         } else {
             System.out.println("[ERRO]  Não foi possível atualizar a demanda!");
+            return;
         }
-
     }
 
     public void fabricarDemanda(int indice) {
@@ -50,7 +53,7 @@ public class GerenciadorProducao {
 
         double mpNecessaria = produtoDem.getQuantidadeMateriaPrimaNecessaria() * qtd;
 
-        if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) {// verifica se tem dindin ou mat. prim. suf.
+        if (!materiaPrima.verificarDisponibilidade(mpNecessaria) || orçamento < calcularCustoProducao(indice)) { // verifica se tem dindin ou mat. prim. suf.
             System.out.println("[ERRO]  Matéria-prima ou orçamento insuficiente!");
             return;
         }
@@ -81,34 +84,56 @@ public class GerenciadorProducao {
         }
 
         demanda.atender();
-        System.out.println("[OK]  Fabricação concluída com sucesso!");
+        System.out.println("============================================\n" +
+                "      ~ PRODUÇÃO CONCLUÍDA COM SUCESSO! :)      \n" +
+                "============================================\n" +
+            "\n" + //bichação
+                                "••••••••••••••••••••••█████████•••••••••\n" + 
+                                "••███████••••••••••███........███•••••••\n" + 
+                                "••█......█•••••••███.............███••••\n" + 
+                                "•••█......█••••██...................██••\n" + 
+                                "••••█.....█•••██.....██......██.....███•\n" + 
+                                "•••••█...█•••█......████....████......██\n" + 
+                                "•••█████████████......................██\n" + 
+                                "•••█............█.........█...........██\n" + 
+                                "•██.............█...██..........██....██\n" + 
+                                "██...███████████.....██........██.....██\n" + 
+                                "█...............█......████████.......██\n" + 
+                                "██..............█....................██•\n" + 
+                                "•█...███████████...................██•••\n" + 
+                                "•██..........████.................█•••••\n" + 
+                                "••████████████•••█████████████████••••••\n" );
     }
 
     // Compra matéria-prima para a produção:
     public void comprarMateriaPrima(double quantidade) {
         if (this.orçamento < (materiaPrima.getCustoPorLote() * quantidade)) {// se nn tem dinheiro p/ transação
             System.out.println("[ERRO]  Não há dinheiro suficiente para essa transação!");
+            return;
         } else {
             materiaPrima.adicionarEstoque(quantidade);// add o q foi comprado
             this.orçamento -= materiaPrima.getCustoPorLote() * quantidade;
             System.out.println("[OK]  Compra realizada com sucesso!");
+            return;
         }
     }
 
-    //Lista todos os produtos acabados em estoque, com quantidade, qualidade e lote:
+    // Lista todos os produtos acabados em estoque, com quantidade, qualidade e
+    // lote:
     public void exibirArmazem() {
         int i;
         System.out.println("==================================================\n" +
-                            "       ARMAZÉM DE PRODUTOS FABRICADOS  \n" +
-                            "==================================================\n");
+                "          ~ ARMAZÉM DE PRODUTOS FABRICADOS ~          \n" +
+                "==================================================\n");
         if (produtosFabricados.isEmpty()) {
-            System.out.println("[ERRO]  Nenhum produto no estoque!");// erro se nn tem produtos no armazem ainda
+            System.out.println("[ERRO]  Nenhum produto em estoque!");// erro se nn tem produtos no armazem ainda
             return;
         } else {
             for (i = 0; i < produtosFabricados.size(); i++) {
                 System.out.println(
                         "- [" + produtosFabricados.get(i).getNome() + "] ID: " + produtosFabricados.get(i).getId()
-                                + " | Qualidade: " + produtosFabricados.get(i).getQualidade());
+                                + " | Qualidade: " + produtosFabricados.get(i).getQualidade()
+                                + " | Lote: " + produtosFabricados.get(i).getLote());
             }
         }
     }
@@ -128,32 +153,52 @@ public class GerenciadorProducao {
     // Percorre coleções de objetos que implementam Auditavel e exibe um relatório
     // consolidado da planta:
     public void gerarAuditoriaGeral() {
+        int i;
         System.out.println("==================================================\n" +
-                            "              RELATÓRIO DE AUDITORIA             \n" +
-                            "==================================================\n");
+                "             ~ RELATÓRIO DE AUDITORIA ~            \n" +
+                "==================================================\n");
 
-        System.out.println("--- AUDITORIA DE MÁQUINAS ---");
-            for (Maquina m : maquinas) {
-                System.out.println(m.gerarRelatorioDiagnostico());
-            }
+        System.out.println("===== AUDITORIA DE MÁQUINAS =====");
+        for (i = 0; i < maquinas.size(); i++) {
+            System.out.println(maquinas.get(i).gerarRelatorioDiagnostico());
+        }
 
-        System.out.println("\n--- AUDITORIA DE PRODUTOS EM ESTOQUE ---");
+        System.out.println("\n===== AUDITORIA DE PRODUTOS EM ESTOQUE =====");
         if (produtosFabricados.isEmpty()) {
-            System.out.println("Nenhum produto em estoque.");
+            System.out.println("[ERRO]  Nenhum produto em estoque.");
         } else {
-            for (Produto p : produtosFabricados) {
-                System.out.println(p.gerarRelatorioDiagnostico());
+            for (i = 0; i < produtosFabricados.size(); i++) {
+                System.out.println(produtosFabricados.get(i).gerarRelatorioDiagnostico());
             }
         }
         System.out.println("==================================================");
     }
 
     // Permite a alteração dinâmica da estratégia em tempo de execução:
-    public void setEstrategia(EstrategiaProducao novaEstrategia){
-
+    public void setEstrategia(EstrategiaProducao novaEstrategia) {
+        this.estrategiaAtual = novaEstrategia;
+        if (novaEstrategia != null) { 
+            System.out.println("[OK]  Nova estratégia: " + novaEstrategia.getNomeEstrategia());
+        }
     }
 
-    /* public void executarProximaProducao(){}  //Utiliza estrategiaAtual.selecionarDemanda(...) para identificar a demanda correta e inicia a fabricação;*/
+    // Utiliza estrategiaAtual.selecionarDemanda(...) para identificar a demanda correta e inicia a fabricação:
+    public void executarProximaProducao() {
+        if (this.estrategiaAtual == null) {
+            System.out.println("[ERRO]  Nenhuma estratégia de produção foi selecionada!");
+            return;
+        }
+        // Seleciona a melhor demanda: 
+        Demanda demandaSelecionada = estrategiaAtual.selecionarDemanda(this.demandas, this.orçamento);
+
+        if (demandaSelecionada == null) {
+            System.out.println("[ERRO]  Nenhuma demanda viável!");
+            return;
+        }
+        // Pegao índice da demanda e inicia a fabricação:
+        int indice = this.demandas.indexOf(demandaSelecionada);
+        fabricarDemanda(indice);
+    }
 
     public double getOrçamento() {
         return this.orçamento;

@@ -7,9 +7,10 @@ public abstract class Produto implements Auditavel {
     private float qualidade; // Qualidade do produto (0.0 a 1.0);
     private float probabilidadeFalhaAcumulada; // Acumula a chance de falha ao passar pelas maquinas;
     private static int totalProdutosFabricados = 0;// Atributo estático para contabilizar instÂcias geradas.
+    private String lote;
 
     // Construtor:
-    public Produto(int id, String nome, double quantidadeMateriaPrimaNecessaria, float qualidade) {
+    public Produto(int id, String nome, double quantidadeMateriaPrimaNecessaria, float qualidade, String lote) {
         this.id = id;
         this.nome = nome;
         this.status = "Não processado";
@@ -17,6 +18,7 @@ public abstract class Produto implements Auditavel {
         this.qualidade = qualidade;
         this.probabilidadeFalhaAcumulada = 0.0f;
         totalProdutosFabricados++;
+        this.lote = lote;
     }
 
     // Da interface Auditável:
@@ -77,4 +79,7 @@ public abstract class Produto implements Auditavel {
         return totalProdutosFabricados;
     }
 
+    public String getLote() {
+        return lote;
+    }
 }
