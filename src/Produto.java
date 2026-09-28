@@ -37,6 +37,8 @@ public abstract class Produto implements Auditavel {
     }
     
     // Métodos Abstratos:
+    public abstract Produto clonar();
+    
     public abstract void processar();
 
     public abstract float calcularTempoProducao();

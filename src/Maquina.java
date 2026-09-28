@@ -24,14 +24,14 @@ public abstract class Maquina implements Auditavel {
 
     // Da interface Auditável:
     public String gerarRelatorioDiagnostico() {
-        return "[Máquina " + this.nome + "] Tipo: " + getTipo() + " Prob. de Falha: "
+        return "[Máquina " + this.nome + "], Tipo: " + getTipo() + ", Prob. de Falha: "
                 + this.probabilidadeFalha * 100 + "%"
-                + " Saúde da Máquina: " + getSaude()
-                + " Precisa de Manutenção: " + (precisaManutencao() ? "SIM" : "NÃO");
+                + ", Saúde da Máquina: " + getSaude()
+                + ", Precisa de Manutenção: " + (precisaManutencao() ? "SIM" : "NÃO");
     }
 
     public boolean precisaManutencao() {
-        if (this.probabilidadeFalha >= 0.6f || this.saude < 30) { // verifica prob. falha associada a saúde
+        if (this.probabilidadeFalha >= 0.6f || this.saude < 20) { // verifica prob. falha associada a saúde
             return true;
         } else {
             return false;

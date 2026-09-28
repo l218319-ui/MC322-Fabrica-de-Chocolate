@@ -67,22 +67,25 @@ public class GerenciadorProducao {
             esteira.adicionarItem(materiaPrima.getNome(), mpNecessaria);
             esteira.removerItem();
             esteira.desligar();
+            System.out.println("[OK]  Matérias-primas adicionadas às máquinas.");
         }
         // processamento:
         for (int i = 1; i <= qtd; i++) {
+            Produto unidade = produtoDem.clonar();
             produtoDem.resetarProbabilidadeFalha();//reseta a prob de falha de cada produto
             for (Maquina m : maquinas) {
                 m.ligar();
-                m.processar(produtoDem);
+                m.processar(unidade);
                 m.desligar();
             }
-            produtosFabricados.add(produtoDem);
+            produtosFabricados.add(unidade);
         }
         if (esteira != null) {// integração da esteira na produção
             esteira.ligar();
             esteira.adicionarItem(produtoDem.getNome(), mpNecessaria);
             esteira.removerItem();
             esteira.desligar();
+            System.out.println("[OK]  Produtos adicionados ao Armazém.");
         }
 
         demanda.atender();
@@ -231,6 +234,7 @@ public class GerenciadorProducao {
         int i;
         for (i = 0; i < maquinas.size(); i++) {
             maquinas.get(i).reparar();
+            System.out.println("[OK] Máquina " + maquinas.get(i).getNome() + " reparada.");
         }
     }
 }

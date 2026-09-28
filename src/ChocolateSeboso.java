@@ -18,4 +18,8 @@ public class ChocolateSeboso extends Produto {
     public String getTipo() {
         return getNome() + " Sebo Puro (que nem chocolate de guarda-chuvinha)";
     }
+
+    public Produto clonar() {
+        return new ChocolateSeboso((int) getId(), getNome(), getLote());
+    }
 }
