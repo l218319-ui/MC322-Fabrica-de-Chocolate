@@ -55,8 +55,8 @@ public class Main {
 
         gp = new GerenciadorProducao(new ArrayList<Demanda>(), new ArrayList<Produto>(), maquinas, mp1, 1000.0D, e1, null); 
         Demanda d1 = new Demanda(p1, 10);
-        Demanda d2 = new Demanda(p2, 10);
-        Demanda d3 = new Demanda(p3, 10);
+        Demanda d2 = new Demanda(p2, 20);
+        Demanda d3 = new Demanda(p3, 30);
         gp.registrarDemanda(d1);
         gp.registrarDemanda(d2);
         gp.registrarDemanda(d3);

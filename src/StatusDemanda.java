@@ -1,7 +1,7 @@
 public enum StatusDemanda {
     // Constantes:
     PENDENTE("Pendente", "Demanda cadastrada, mas ainda não iniciada."),
-    EM_PRODUCAO("Em Produção", "Demanda selecionada e em processo de fabricação."),
+    PRODUZINDO("Em Produção", "Demanda selecionada e em processo de fabricação."),
     CONCLUIDA("Concluída", "Demanda com todos os produtos produzidos com sucesso."),
     CANCELADA("Cancelada", "Demanda cancelada por falta de orçamento ou insumos.");
 
