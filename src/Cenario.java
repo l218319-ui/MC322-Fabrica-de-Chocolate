@@ -1,7 +1,7 @@
 public enum Cenario {
     // Constantes:
-    IDEAL("IDEAL", 1000000.0, 0.2f, 0.2f),
-    APOCALIPTICO("APOCALÍPTICO", 1000.0, 2.0f, 2.0f);
+    IDEAL("IDEAL", 1000000.0, 0.04f, 0.04f),
+    APOCALIPTICO("APOCALÍPTICO", 1000.0, 1.0f, 1.0f);
 
     // Atributos:
     private final double orçamentoInicial;

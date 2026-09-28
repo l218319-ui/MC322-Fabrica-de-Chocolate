@@ -23,8 +23,9 @@ public abstract class Produto implements Auditavel {
 
     // Da interface Auditável:
     public String gerarRelatorioDiagnostico() {
-        return "- [Produto " + this.nome + " ] - ID: " + this.id + " - Qualidade: " + this.qualidade + 
-        " - Prob. de Falha Acumulada: " + this.probabilidadeFalhaAcumulada *100 + "%";
+        return "- [Produto " + this.nome + " ], ID: " + this.id + ", Qualidade: " + this.qualidade + 
+        ", Prob. de Falha Acumulada: " + this.probabilidadeFalhaAcumulada *100 + "%" +
+        ",  Status: " + this.status;
     }
 
     public boolean precisaManutencao() {
@@ -81,5 +82,9 @@ public abstract class Produto implements Auditavel {
 
     public String getLote() {
         return lote;
+    }
+
+    public void resetarProbabilidadeFalha () {
+        this.probabilidadeFalhaAcumulada = 0.0f;
     }
 }

@@ -23,18 +23,19 @@ public class Main {
                     "Uma fábrica feita para transformar chocolate em experiências mágicas.\n" + 
                     "Descubra, experimente e deixe a imaginação te levar!\n" + 
                     "Desenvolvido por: Laura Póvoas\n" + 
-                    "===========================================================\n");
-        System.out.println("SELECIONE O CENÁRIO DE OPERAÇÃO:\n"
-                        + "1 - Cenário Ideal (Orçamento alto, baixa taxa de falhas)\n"
-                        + "2 - Cenário Apocalíptico (Orçamento curto, alta taxa de falhas)\n"
-                        + "Escolha: ");
+                    "===========================================================\n"+
+                    "SELECIONE O CENÁRIO DE OPERAÇÃO:\n" + 
+                    "1 - Cenário Ideal \n" +
+                    "2 - Cenário Apocalíptico \n" +
+                    "Escolha: ");
         int opCen = teclado.nextInt();
         if (opCen == 1) {
-            Cenario cenarioEsc = Cenario.IDEAL;
+            cenarioEsc = Cenario.IDEAL;
         } else if (opCen == 2){
-            Cenario cenarioEsc = Cenario.APOCALIPTICO;
+            cenarioEsc = Cenario.APOCALIPTICO;
         } else {
-            System.out.println("[ERRO]  Opção inválida! Tente novamente.");
+            System.out.println("[ERRO]  Opção inválida!");
+            cenarioEsc = Cenario.IDEAL;
         }
         System.out.println(
                 "===========================================================\n" +
@@ -48,9 +49,8 @@ public class Main {
 
     // Instanciação dos objetos + informações na telinha:
     private static void inicializa(Cenario cenario) {
-        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 900, "kg", 1);
+        mp1 = new MateriaPrima(1, "Manteiga de Cacau", 900, "kg", 3.0);
         System.out.println("Matéria-prima: " + mp1.getId() + " - " + mp1.getNome());
-        System.out.println("Quantidade: " + mp1.getQuantidade() + " " + mp1.getUnidade());
 
         System.out.println("\nProdutos disponíveis:");
         p1 = new ChocolatePremium(1, "Barra de chocolate", "AQ1");
@@ -83,12 +83,24 @@ public class Main {
 
     // Menu com opções númericas:
     private static void menu() {
+        String nomeEstr = "";
+        String nomeCen = "";
+        if (gp.getEstrategiaAtual() != null){
+            nomeEstr = gp.getEstrategiaAtual().getNomeEstrategia();
+        } else {
+            nomeEstr = "Nenhuma selecionada";
+        }
+        if (gp.getCenarioAtual() != null){
+            nomeCen = gp.getCenarioAtual().getNome();
+        } else {
+            nomeCen = "Não definido";
+        }
         System.out.println(
               "\n===========================================================\n" +
                 "|                       MENU PRINCIPAL                    |\n" +
                 "===========================================================\n" +
-                "ESTRATÉGIA ATUAL: [" + gp.getEstrategiaAtual().getNomeEstrategia() + "]\n" +
-                "CENÁRIO ATIVO:    [" + gp.getCenarioAtual().getNome() + "]\n" +
+                "ESTRATÉGIA ATUAL: [" + nomeEstr + "]\n" +
+                "CENÁRIO ATIVO:    [" + nomeCen + "]\n" +
                 "ORÇAMENTO ATUAL:  R$ "+ gp.getOrçamento() +"\n"+
                 "===========================================================\n" +
                 "1 - ATUALIZAR DEMANDAS\n"+
@@ -97,6 +109,7 @@ public class Main {
                 "4 - GERENCIAMENTO DE ESTRATEGIA\n"+
                 "5 - AUDITORIA\n"+
                 "6 - COMPRAR MATÉRIA-PRIMA\n"+
+                "7 - REPARAR MÁQUINAS\n" +
                 "0 - SAIR\n"+
                 "Escolha:");
         int op = teclado.nextInt();
@@ -114,6 +127,8 @@ public class Main {
             System.out.println("Entre com a quantidade de matéria-prima a ser comprada:");
             double qtd1 = teclado.nextDouble();
             gp.comprarMateriaPrima(qtd1);
+        } else if (op == 7) {
+            gp.repararMaquinas();
         } else if (op == 0) {
             System.out.println("Saindo...");
             System.exit(0);
@@ -166,6 +181,7 @@ public class Main {
                     "1 - Fabricar Barra de chocolate\n"+
                     "2 - Fabricar Ovo de Páscoa\n"+
                     "3 - Fabricar Bombom de guarda-chuva\n"+
+                    "4 - Executar Próxima Produção (Via Estratégia)\n"+
                     "0 - Voltar ao Menu Principal\n" +
                     "===========================================================\n" +
                     "Escolha: ");
@@ -178,6 +194,8 @@ public class Main {
                 gp.fabricarDemanda(1);
             } else if (op == 3){
                 gp.fabricarDemanda(2);
+            } else if (op == 4){
+                gp.executarProximaProducao();
             } else {
                 System.out.println("[ERRO] Opção inválida!");
             }

@@ -3,7 +3,6 @@ public class Demanda {
     private Produto tipoProduto; // Nome do produto demandado;
     private long quantidadeProdutos; // Quantidade de produtos;
     private StatusDemanda status; // Status da demanda.
-    private MateriaPrima materiaPrima; //materia prima de cada demanda
 
     // Construtor:
     public Demanda(Produto tipoProduto, long quantidadeProdutos) {
@@ -18,8 +17,8 @@ public class Demanda {
     }
 
     public double calcularMateriaPrimaNecessaria() {
-        double MateriaPrimaNecessaria = tipoProduto.getQuantidadeMateriaPrimaNecessaria() * this.quantidadeProdutos;
-        return MateriaPrimaNecessaria;
+        double materiaPrimaNecessaria = tipoProduto.getQuantidadeMateriaPrimaNecessaria() * this.quantidadeProdutos;
+        return materiaPrimaNecessaria;
     }
 
     // Atualiza o status da demanda:
@@ -56,8 +55,9 @@ public class Demanda {
     }
 
     public double custoDem () {
-        double custo_máq_estimado = 6; 
-        double custo = calcularMateriaPrimaNecessaria() + materiaPrima.getCustoPorLote() + custo_máq_estimado;
-        return custo; // ou eu passo máquinas como atributo da classe demandas ou nn da para pegar o custo
+        double custoMáqEstimado = 6;
+        double custoMateriaPrima = 3.0; 
+        double custo = calcularMateriaPrimaNecessaria() + custoMateriaPrima  + custoMáqEstimado;
+        return custo; 
     }
 }

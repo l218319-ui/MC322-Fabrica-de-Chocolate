@@ -70,6 +70,7 @@ public class GerenciadorProducao {
         }
         // processamento:
         for (int i = 1; i <= qtd; i++) {
+            produtoDem.resetarProbabilidadeFalha();//reseta a prob de falha de cada produto
             for (Maquina m : maquinas) {
                 m.ligar();
                 m.processar(produtoDem);
@@ -85,9 +86,9 @@ public class GerenciadorProducao {
         }
 
         demanda.atender();
-        System.out.println("============================================\n" +
-                "      ~ PRODUÇÃO CONCLUÍDA COM SUCESSO! :)      \n" +
-                "============================================\n" +
+        System.out.println("===========================================================\n" +
+                           "|           ~ PRODUÇÃO CONCLUÍDA COM SUCESSO! :)          |\n" +
+                           "===========================================================\n" +
             "\n" + //bichação
                                 "••••••••••••••••••••••█████████•••••••••\n" + 
                                 "••███████••••••••••███........███•••••••\n" + 
@@ -123,18 +124,19 @@ public class GerenciadorProducao {
     // lote:
     public void exibirArmazem() {
         int i;
-        System.out.println("==================================================\n" +
-                "          ~ ARMAZÉM DE PRODUTOS FABRICADOS ~          \n" +
-                "==================================================\n");
+        System.out.println("===========================================================\n" +
+                           "|           ~ ARMAZÉM DE PRODUTOS FABRICADOS ~            |\n" +
+                           "===========================================================\n");
         if (produtosFabricados.isEmpty()) {
             System.out.println("[ERRO]  Nenhum produto em estoque!");// erro se nn tem produtos no armazem ainda
             return;
         } else {
             for (i = 0; i < produtosFabricados.size(); i++) {
                 System.out.println(
-                        "- [" + produtosFabricados.get(i).getNome() + "] ID: " + produtosFabricados.get(i).getId()
-                                + " | Qualidade: " + produtosFabricados.get(i).getQualidade()
-                                + " | Lote: " + produtosFabricados.get(i).getLote());
+                        "[" + produtosFabricados.get(i).getNome() + "], ID: " + produtosFabricados.get(i).getId()
+                                + ",  Qualidade: " + produtosFabricados.get(i).getQualidade()
+                                + ",  Lote: " + produtosFabricados.get(i).getLote() 
+                                + ",  Status: " + produtosFabricados.get(i).getStatus());
             }
         }
     }
@@ -155,16 +157,20 @@ public class GerenciadorProducao {
     // consolidado da planta:
     public void gerarAuditoriaGeral() {
         int i;
-        System.out.println("==================================================\n" +
-                "             ~ RELATÓRIO DE AUDITORIA ~            \n" +
-                "==================================================\n");
+        System.out.println("===========================================================\n" +
+                           "|                ~ RELATÓRIO DE AUDITORIA ~               |\n" +
+                           "===========================================================\n");
 
-        System.out.println("===== AUDITORIA DE MÁQUINAS =====");
+        System.out.println("===========================================================\n" +
+                           "|                       ~ MÁQUINAS ~                      |\n" +
+                           "===========================================================\n");
         for (i = 0; i < maquinas.size(); i++) {
             System.out.println(maquinas.get(i).gerarRelatorioDiagnostico());
         }
 
-        System.out.println("\n===== AUDITORIA DE PRODUTOS EM ESTOQUE =====");
+        System.out.println("===========================================================\n" +
+                           "|                     ~ PRODUTOS FÁB. ~                   |\n" +
+                           "===========================================================\n");
         if (produtosFabricados.isEmpty()) {
             System.out.println("[ERRO]  Nenhum produto em estoque.");
         } else {
@@ -172,7 +178,7 @@ public class GerenciadorProducao {
                 System.out.println(produtosFabricados.get(i).gerarRelatorioDiagnostico());
             }
         }
-        System.out.println("==================================================");
+        System.out.println("===========================================================");
     }
 
     // Permite a alteração dinâmica da estratégia em tempo de execução:
@@ -219,5 +225,12 @@ public class GerenciadorProducao {
 
     public EstrategiaProducao getEstrategiaAtual() {
         return estrategiaAtual;
+    }
+
+    public void repararMaquinas() {
+        int i;
+        for (i = 0; i < maquinas.size(); i++) {
+            maquinas.get(i).reparar();
+        }
     }
 }

@@ -5,6 +5,7 @@ public class MaquinaEmbaladora extends Maquina {
         super(nome, capacidadeMaxima, 0.0f, custoOperacao);
     }
 
+    // Métodos:
     public String getTipo() {
         return "Máquina de embalar chocolates";
     }
@@ -20,15 +21,13 @@ public class MaquinaEmbaladora extends Maquina {
             produto.setStatus("Produto embalado");
 
             // diminuir a saúde da máq!!!!!!!!!
-            int dano = random.nextInt(1,4);
+            int dano = random.nextInt(1, 4);
             aplicaDesgaste(dano);
-
             // aumenta prob de falha baseada na saúde das máq.:
-            int chanceFalha = (100 - this.getSaude()) / 100;
+            double chanceFalha = (100.0 - this.getSaude()) / 100.0;
             if (random.nextDouble() < chanceFalha) {
-                produto.aumentarProbabilidadeFalha(0.05f);
+                produto.aumentarProbabilidadeFalha(0.03f);
             }
         }
     }
-
 }
