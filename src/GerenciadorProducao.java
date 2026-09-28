@@ -1,36 +1,36 @@
 import java.util.ArrayList;
 
 public class GerenciadorProducao {
-
+    // Atributos:
     private ArrayList<Demanda> demandas; // ArrayList de demandas;
     private ArrayList<Produto> produtosFabricados; // ArrayList do armazém;
     private ArrayList<Maquina> maquinas; // ArrayList de máquinas;
     private MateriaPrima materiaPrima; // Matéria-prima;
     private Esteira esteira; // Esteira de transporte;
     private double orçamento; // Orçamento disponível.
-    private EstrategiaProducao estrategiaAtual;
+    private EstrategiaProducao estrategiaAtual; 
+    private Cenario cenarioAtual; // Define o cenário ativo
 
     // Construtor:
     public GerenciadorProducao(ArrayList<Demanda> demandas, ArrayList<Produto> produtosFabricados,
-            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, double orçamento, Esteira esteira,
-            EstrategiaProducao estrategiaAtual) {
+            ArrayList<Maquina> maquinas, MateriaPrima materiaPrima, Cenario cenarioAtual,Esteira esteira) {
         this.demandas = demandas;
         this.produtosFabricados = produtosFabricados;
         this.maquinas = maquinas;
         this.materiaPrima = materiaPrima;
-        this.orçamento = orçamento;
+        this.cenarioAtual = cenarioAtual;
+        this.orçamento = cenarioAtual.getOrçamentoInicial();
         this.esteira = esteira;
         this.estrategiaAtual = null;
     }
 
     // Métodos:
-
     public void registrarDemanda(Demanda demanda) {
         demandas.add(demanda);
     }
 
     public void atualizarDemanda(int indice, long quantidade) {
-        if (indice >= 0 && indice < demandas.size()) {// verifica os indices
+        if (indice >= 0 && indice < demandas.size()) {// verifica os indices se são válidos
             demandas.get(indice).atualizarQuantidade(quantidade);
             System.out.println("[OK]  Demanda atualizada com sucesso!");
             return;
@@ -40,6 +40,7 @@ public class GerenciadorProducao {
         }
     }
 
+    // Fabrica as demandas, verifica dinheiro e matéria prima, liga as máquinas e processa:
     public void fabricarDemanda(int indice) {
         if (indice < 0 || indice >= demandas.size()) {// verifica se o indice é válido
             System.out.println("[ERRO] Índice de demanda inválido!");
@@ -177,9 +178,7 @@ public class GerenciadorProducao {
     // Permite a alteração dinâmica da estratégia em tempo de execução:
     public void setEstrategia(EstrategiaProducao novaEstrategia) {
         this.estrategiaAtual = novaEstrategia;
-        if (novaEstrategia != null) { 
-            System.out.println("[OK]  Nova estratégia: " + novaEstrategia.getNomeEstrategia());
-        }
+        System.out.println("[OK]  Nova estratégia: " + novaEstrategia.getNomeEstrategia());
     }
 
     // Utiliza estrategiaAtual.selecionarDemanda(...) para identificar a demanda correta e inicia a fabricação:
@@ -197,14 +196,28 @@ public class GerenciadorProducao {
         }
         // Pegao índice da demanda e inicia a fabricação:
         int indice = this.demandas.indexOf(demandaSelecionada);
+        System.out.println("[OK]  A demanda a ser produzida é: " + demandaSelecionada.getTipoProduto().getNome());
         fabricarDemanda(indice);
     }
 
+    // Getters e Setters:
     public double getOrçamento() {
         return this.orçamento;
     }
 
     public void exibirOrçamento() {
         System.out.println("O orçamento disponível é " + this.orçamento);
+    }
+
+    public void setCenarioAtual(Cenario cenarioAtual) { // setta o cenário desejado.
+        this.cenarioAtual = cenarioAtual;
+    }
+
+    public Cenario getCenarioAtual() {
+        return cenarioAtual;
+    }
+
+    public EstrategiaProducao getEstrategiaAtual() {
+        return estrategiaAtual;
     }
 }

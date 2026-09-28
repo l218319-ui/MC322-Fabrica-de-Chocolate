@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public abstract class Maquina implements Auditavel {
-
+    // Atributos:
     private String nome; // Nome da máquina;
     private boolean ligada; // Indica se a máquina está ligada;
     private double capacidadeMaxima; // Capacidade máxima de processamento por ciclo;
@@ -23,15 +23,15 @@ public abstract class Maquina implements Auditavel {
     }
 
     // Da interface Auditável:
-
     public String gerarRelatorioDiagnostico() {
         return "- [Máquina " + this.nome + " ] - Tipo: " + getTipo() + " - Prob. de Falha: "
-                + this.probabilidadeFalha * 100 +
-                " - Saúde da Máquina: " + getSaude();
+                + this.probabilidadeFalha * 100 + "%"
+                + " - Saúde da Máquina: " + getSaude()
+                + " - Precisa de Manutenção: " + (precisaManutencao() ? "SIM" : "NÃO");
     }
 
     public boolean precisaManutencao() {
-        if (this.probabilidadeFalha >= 0.2f) { // verifica prob. falha associada a saúde
+        if (this.probabilidadeFalha >= 0.2f || this.saude < 30) { // verifica prob. falha associada a saúde
             return true;
         } else {
             return false;
@@ -39,7 +39,6 @@ public abstract class Maquina implements Auditavel {
     }
 
     // Métodos Abstratos:
-
     public abstract void processar(Produto produto);
 
     public abstract String getTipo();// Retorna o tipo da máquina.
@@ -67,7 +66,7 @@ public abstract class Maquina implements Auditavel {
         return this.capacidadeMaxima;
     }
 
-    public float getCustoOperacao() { // custo com energia e manutenção?
+    public float getCustoOperacao() {
         return this.custoOperacao;
     }
 
@@ -89,6 +88,9 @@ public abstract class Maquina implements Auditavel {
 
     protected void aplicaDesgaste(int valor){// Desgaste
         this.saude -= valor;
+        if (this.saude < 0) {
+            this.saude = 0;
+        }
     }
 
     public void setSaude(int saude) {
