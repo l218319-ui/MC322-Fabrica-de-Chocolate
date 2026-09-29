@@ -31,7 +31,7 @@ public class Demanda {
     // Atualização de status:
     public void setStatus(StatusDemanda novoStatus) {
         if (this.status == StatusDemanda.CANCELADA && novoStatus == StatusDemanda.CONCLUIDA) {
-            throw new IllegalStateException("[ERRO]   Não é possível concluir uma demanda que está CANCELADA.");
+            throw new IllegalStateException("[ERRO]   Não é possível concluir uma demanda que está CANCELADA!");// teste
         }
         this.status = novoStatus;
     }
@@ -54,10 +54,10 @@ public class Demanda {
         return status;
     }
 
-    public double custoDem () {
+    public double custoDem() { // custo usado na escolha de estratégias
         double custoMáqEstimado = 6;
-        double custoMateriaPrima = 3.0; 
-        double custo = calcularMateriaPrimaNecessaria() + custoMateriaPrima  + custoMáqEstimado;
-        return custo; 
+        double custoMateriaPrima = 3.0;
+        double custo = calcularMateriaPrimaNecessaria() + custoMateriaPrima + custoMáqEstimado;
+        return custo;
     }
 }

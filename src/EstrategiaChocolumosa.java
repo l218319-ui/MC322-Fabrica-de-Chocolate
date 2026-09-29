@@ -11,7 +11,7 @@ public class EstrategiaChocolumosa implements EstrategiaProducao {
         Demanda melhorDemanda = null;
         for (int i = 0; i < demandas.size(); i++) {
             Demanda atual = demandas.get(i);
-            if (atual.getStatus() == StatusDemanda.PENDENTE) {//verifica a maior demanda entre as pendentes
+            if (atual.getStatus() == StatusDemanda.PENDENTE) {//verifica a maior demanda entre as pendentes em qnt de prodts.
                 if (melhorDemanda == null || atual.getQuantidadeProdutos() > melhorDemanda.getQuantidadeProdutos()) {
                     melhorDemanda = atual;
                 }

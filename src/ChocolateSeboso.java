@@ -19,7 +19,7 @@ public class ChocolateSeboso extends Produto {
         return getNome() + " Sebo Puro (que nem chocolate de guarda-chuvinha)";
     }
 
-    public Produto clonar() {
+    public Produto clonar() {//adicionado pra nn dar um erro no armazém, sem isso o item rejeitado setta todos como rejeitado
         return new ChocolateSeboso((int) getId(), getNome(), getLote());
     }
 }

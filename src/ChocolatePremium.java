@@ -18,8 +18,8 @@ public class ChocolatePremium extends Produto {
     public String getTipo() {
         return getNome() + " Premium Gourmet & Artesanal (estão te enganando pra tirar seu dinheiro, nada disso é real)";
     }
-    
-    public Produto clonar() {
+
+    public Produto clonar() {//adicionado pra nn dar um erro no armazém, sem isso o item rejeitado setta todos como rejeitado
         return new ChocolatePremium((int) getId(), getNome(), getLote());
     }
 }

@@ -1,19 +1,19 @@
 public enum Cenario {
     // Constantes:
-    IDEAL("IDEAL", 1000000.0, 0.04f, 0.04f),
-    APOCALIPTICO("APOCALÍPTICO", 1000.0, 1.0f, 1.0f);
+    IDEAL("IDEAL", 100000.0, 1, 1.0f),
+    APOCALIPTICO("APOCALÍPTICO", 1000.0, 2, 2.0f);
 
     // Atributos:
     private final double orçamentoInicial;
-    private final float fatorDesgaste;
-    private final float fatorFalha;
+    private final int desgaste;
+    private final float falha;
     private final String nome;
 
     // Construtor:
-    private Cenario(String nome, double orçamentoInicial, float fatorDesgaste, float fatorFalha) {
+    private Cenario(String nome, double orçamentoInicial, int desgaste, float falha) {
         this.orçamentoInicial = orçamentoInicial;
-        this.fatorDesgaste = fatorDesgaste;
-        this.fatorFalha = fatorFalha;
+        this.desgaste = desgaste;
+        this.falha = falha;
         this.nome = nome;
     }
 
@@ -22,12 +22,12 @@ public enum Cenario {
         return orçamentoInicial;
     }
 
-    public float getFatorDesgaste() {
-        return fatorDesgaste;
+    public int getDesgaste() {
+        return desgaste;
     }
 
-    public float getFatorFalha() {
-        return fatorFalha;
+    public float getFalha() {
+        return falha;
     }
 
     public String getNome() {

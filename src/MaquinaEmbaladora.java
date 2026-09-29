@@ -10,7 +10,7 @@ public class MaquinaEmbaladora extends Maquina {
         return "Máquina de embalar chocolates";
     }
 
-    public void processar(Produto produto) {
+    public void processar(Produto produto, Cenario cenario) {
         if (!estaLigada()) {
             System.out.println("[ERRO]  Não é possível embalar, pois a máquina " + getNome() + " está desligada!");
             return;
@@ -22,9 +22,9 @@ public class MaquinaEmbaladora extends Maquina {
 
             // diminuir a saúde da máq!!!!!!!!!
             int dano = random.nextInt(1, 4);
-            aplicaDesgaste(dano);
+            aplicaDesgaste(dano, cenario);
             // aumenta prob de falha baseada na saúde das máq.:
-            double chanceFalha = (100.0 - this.getSaude()) / 100.0;
+            double chanceFalha = ((100.0 - this.getSaude()) / 100.0) * cenario.getFalha();
             if (random.nextDouble() < chanceFalha) {
                 produto.aumentarProbabilidadeFalha(0.03f);
             }

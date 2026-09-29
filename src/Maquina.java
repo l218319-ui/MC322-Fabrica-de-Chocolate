@@ -39,7 +39,7 @@ public abstract class Maquina implements Auditavel {
     }
 
     // Métodos Abstratos:
-    public abstract void processar(Produto produto);
+    public abstract void processar(Produto produto, Cenario cenario);
 
     public abstract String getTipo();// Retorna o tipo da máquina.
 
@@ -71,8 +71,14 @@ public abstract class Maquina implements Auditavel {
     }
 
     // Método protegido para checagem aleatória de falhas:
-    protected boolean verificarFalha() {
-        if (random.nextDouble() < probabilidadeFalha) {
+    protected boolean verificarFalha(Cenario cenario) {
+        float fator;
+        if (cenario != null){ //incorpora o cenário nas falhas
+            fator = cenario.getFalha();
+        } else {
+            fator = 1.0f;
+        }
+        if (random.nextDouble() < (probabilidadeFalha * fator)) {
             return true;
         }
         return false;
@@ -86,9 +92,15 @@ public abstract class Maquina implements Auditavel {
         this.saude = 100;
     }
 
-    protected void aplicaDesgaste(int valor){// Desgaste
-        this.saude -= valor;
-        if (this.saude < 0) {
+    protected void aplicaDesgaste(int valor, Cenario cenario){// Desgaste
+        int fatorDes;
+         if (cenario != null){ //incorpora o cenário nos desgastes
+            fatorDes = cenario.getDesgaste();
+        } else {
+            fatorDes = 1;
+        }
+        this.saude -= (valor * fatorDes);
+        if (this.saude < 0) { //assegura que a vida não seja negativa
             this.saude = 0;
         }
     }

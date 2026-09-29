@@ -19,7 +19,7 @@ public class ChocolateMeiaBoca extends Produto {
         return getNome() + " de média Qualidade (alma de sapatênis, uma média entre tênis e sapatilha)";
     }
 
-    public Produto clonar() { //adicionado pra nn dar um erro no armazém
+    public Produto clonar() { //adicionado pra nn dar um erro no armazém, sem isso o item rejeitado setta todos como rejeitado
         return new ChocolateMeiaBoca((int) getId(), getNome(), getLote());
     }
 }

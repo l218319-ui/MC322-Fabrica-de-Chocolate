@@ -37,7 +37,7 @@ public abstract class Produto implements Auditavel {
     }
     
     // Métodos Abstratos:
-    public abstract Produto clonar();
+    public abstract Produto clonar(); //ajeita o problema (que tive na tarefa 2) dos produtos no fabricar e armazém
     
     public abstract void processar();
 

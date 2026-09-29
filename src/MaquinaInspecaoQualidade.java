@@ -10,7 +10,7 @@ public class MaquinaInspecaoQualidade extends Maquina {
         return "Máquina de inspeção de qualidade";
     }
 
-    public void processar(Produto produto) {
+    public void processar(Produto produto, Cenario cenario) {
         if (!estaLigada()) {
             System.out.println("[ERRO]  Não é possível inspecionar, pois a máquina " + getNome() + "está desligada!");
             return;
@@ -19,27 +19,27 @@ public class MaquinaInspecaoQualidade extends Maquina {
             return;
         } else {
 
-            //prob. de falha da maq. de inspeção:
-            double chanceFalha = (100.0 - this.getSaude()) / 100.0;
+            // prob. de falha da maq. de inspeção:
+            double chanceFalha = ((100.0 - this.getSaude()) / 100.0) * cenario.getFalha();
             float defeitoBase = produto.getQualidade() * 0.01f;
             float chanceDefeitoTotal = defeitoBase + produto.getProbabilidadeFalhaAcumulada();
 
-            if (verificarFalha()) {// checagem de falha da maquina
+            if (verificarFalha(cenario)) {// checagem de falha da maquina
                 produto.setStatus("REJEITADO");
                 System.out.println("[ERRO]  Produto REJEITADO! (Falha na Máquina de Inspeção)");
-            } else if (this.getSaude() < 20 && random.nextDouble() < chanceFalha) {//baseado em saúde
+            } else if (this.getSaude() < 20 && random.nextDouble() < chanceFalha) {// baseado em saúde
                 produto.setStatus("REJEITADO");
-                System.out.println("[ERRO]  Produto REJEITADO (A saúde da máquina está baixa, faça reparos!)!");
-            } else if (random.nextDouble() < chanceDefeitoTotal) {//baseado em qualidade
+                System.out.println("[ERRO]  Produto REJEITADO (A saúde da máquina está baixa, faça reparos!)");
+            } else if (random.nextDouble() < chanceDefeitoTotal) {// baseado em qualidade
                 produto.setStatus("REJEITADO");
                 System.out.println("[ERRO]  Produto REJEITADO na inspeção de qualidade!");
             } else {
-                produto.setStatus("APROVADO");
+                produto.setStatus("APROVADO - INSPEÇÃO");
             }
 
             // diminuir a saúde da máq!!!!!!!!!
-            int dano = random.nextInt(1,4);
-            aplicaDesgaste(dano);
+            int dano = random.nextInt(1, 4);
+            aplicaDesgaste(dano, cenario);
 
         }
     }

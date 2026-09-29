@@ -62,7 +62,7 @@ public class GerenciadorProducao {
         this.orçamento -= calcularCustoProducao(indice);// tira do orçamento o custo da prod.
         materiaPrima.consumir(mpNecessaria);// tira da mat.prim. o custo da prod.
 
-        if (esteira != null) {// integração da esteira na produção
+        if (esteira != null) {// integração da esteira na produção inicio
             esteira.ligar();
             esteira.adicionarItem(materiaPrima.getNome(), mpNecessaria);
             esteira.removerItem();
@@ -71,16 +71,16 @@ public class GerenciadorProducao {
         }
         // processamento:
         for (int i = 1; i <= qtd; i++) {
-            Produto unidade = produtoDem.clonar();
-            produtoDem.resetarProbabilidadeFalha();//reseta a prob de falha de cada produto
+            Produto unidade = produtoDem.clonar(); //agora sim, temos produtos individuais e cada um tem seu próprio status
+            produtoDem.resetarProbabilidadeFalha();//reseta a prob de falha de cada produto, aí não se torna acumulativo 
             for (Maquina m : maquinas) {
                 m.ligar();
-                m.processar(unidade);
+                m.processar(unidade, this.cenarioAtual);
                 m.desligar();
             }
             produtosFabricados.add(unidade);
         }
-        if (esteira != null) {// integração da esteira na produção
+        if (esteira != null) {// integração da esteira na produção fim
             esteira.ligar();
             esteira.adicionarItem(produtoDem.getNome(), mpNecessaria);
             esteira.removerItem();
@@ -156,8 +156,7 @@ public class GerenciadorProducao {
         return custo;
     }
 
-    // Percorre coleções de objetos que implementam Auditavel e exibe um relatório
-    // consolidado da planta:
+    // Percorre coleções de objetos que implementam Auditavel e exibe um relatório da planta:
     public void gerarAuditoriaGeral() {
         int i;
         System.out.println("===========================================================\n" +
@@ -175,7 +174,7 @@ public class GerenciadorProducao {
                            "|                     ~ PRODUTOS FÁB. ~                   |\n" +
                            "===========================================================\n");
         if (produtosFabricados.isEmpty()) {
-            System.out.println("[ERRO]  Nenhum produto em estoque.");
+            System.out.println("[ERRO]  Nenhum produto em estoque!");
         } else {
             for (i = 0; i < produtosFabricados.size(); i++) {
                 System.out.println(produtosFabricados.get(i).gerarRelatorioDiagnostico());
@@ -200,7 +199,7 @@ public class GerenciadorProducao {
         Demanda demandaSelecionada = estrategiaAtual.selecionarDemanda(this.demandas, this.orçamento);
 
         if (demandaSelecionada == null) {
-            System.out.println("[ERRO]  Nenhuma demanda viável!");
+            System.out.println("[ERRO]  Nenhuma demanda pode ser produzida!");
             return;
         }
         // Pegao índice da demanda e inicia a fabricação:
@@ -230,7 +229,7 @@ public class GerenciadorProducao {
         return estrategiaAtual;
     }
 
-    public void repararMaquinas() {
+    public void repararMaquinas() { // reparo das máquinas!!!!!!!!!!!
         int i;
         for (i = 0; i < maquinas.size(); i++) {
             maquinas.get(i).reparar();
