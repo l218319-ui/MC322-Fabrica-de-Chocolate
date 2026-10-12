@@ -1,19 +1,48 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Classe principal da aplicação da Fábrica de Chocolates.
+ * Responsável por inicializar os componentes do sistema e gerenciar a interface do usuário via terminal.
+ * 
+ * @author Laura Póvoas 
+ */
 public class Main {
-    // Declarações de objetos:
+
+    /** Instância de matéria-prima. */
     static MateriaPrima mp1;
+
+    /** Produto 1: Chocolate Premium. */
     static Produto p1;
+
+    /** Produto 2: Chocolate Meia Boca. */
     static Produto p2;
+
+    /** Produto 3: Chocolate Seboso. */
     static Produto p3;
+
+    /** Esteira transportadora da planta. */
     static Esteira e1;
+
+    /** Gerenciador central de produção. */
     static GerenciadorProducao gp;
+
+    /** Lista de demandas de chocolates. */
     static ArrayList<Demanda> demandas;
+
+    /** Leitor de entrada via console. */
     static Scanner teclado = new Scanner(System.in);
+
+    /** Cenário de operação selecionado. */
     static Cenario cenarioEsc;
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * Ponto de entrada do programa. Inicializa o cenário e executa o loop principal com tratamento de exceções.
+     *
+     * @param args Argumentos de linha de comando.
+     */
+    public static void main(String[] args) {
         System.out.println(
                     "===========================================================\n" + 
                     "|          A NÃO-FANTÁSTICA FÁBRICA DE CHOCOLATES         |\n" + 
@@ -28,26 +57,50 @@ public class Main {
                     "1 - Cenário Ideal \n" +
                     "2 - Cenário Apocalíptico \n" +
                     "Escolha: ");
-        int opCen = teclado.nextInt();
-        if (opCen == 1) {
+
+        try {
+            int opCen = teclado.nextInt();
+            if (opCen == 1) {
+                cenarioEsc = Cenario.IDEAL;
+            } else if (opCen == 2) {
+                cenarioEsc = Cenario.APOCALIPTICO;
+            } else {
+                throw new PlantaException("Opção de cenário inválida!");
+            }
+        } catch (InputMismatchException e) {
+            teclado.nextLine();
+            exibirMensagemErro("Entrada inválida! Valor padrão (Cenário Ideal) foi selecionado.");
             cenarioEsc = Cenario.IDEAL;
-        } else if (opCen == 2){
-            cenarioEsc = Cenario.APOCALIPTICO;
-        } else {
-            System.out.println("[ERRO]  Opção inválida!");
+        } catch (PlantaException e) {
+            exibirMensagemErro(e.getMessage() + " Valor padrão (Cenário Ideal) foi selecionado.");
             cenarioEsc = Cenario.IDEAL;
         }
+
         System.out.println(
                 "===========================================================\n" +
                 "|                     PLANTA INDUSTRIAL                   |\n" +
                 "===========================================================\n");
         inicializa(cenarioEsc);
-        while(true) {
-            menu();
+
+        while (true) {
+            try {
+                menu();
+            } catch (PlantaException e) {
+                exibirMensagemErro(e.getMessage());
+            } catch (InputMismatchException e) {
+                teclado.nextLine();
+                exibirMensagemErro("Entrada inválida! Digite apenas números inteiros no menu.");
+            } catch (Exception e) {
+                exibirMensagemErro("Ocorreu um erro inesperado: " + e.getMessage());
+            }
         }
     }
 
-    // Instanciação dos objetos + informações na telinha:
+    /**
+     * Instancia os objetos fundamentais da fábrica (matéria-prima, produtos, máquinas e demandas).
+     *
+     * @param cenario Cenário de simulação escolhido.
+     */
     private static void inicializa(Cenario cenario) {
         mp1 = new MateriaPrima(1, "Manteiga de Cacau", 900, "kg", 3.0);
         System.out.println("Matéria-prima: " + mp1.getId() + " - " + mp1.getNome());
@@ -81,16 +134,20 @@ public class Main {
         gp.registrarDemanda(d3);
     }
 
-    // Menu com opções númericas:
+    /**
+     * Exibe o menu principal e executa as opções.
+     *
+     * @throws PlantaException se a opção selecionada for inválida.
+     */
     private static void menu() {
         String nomeEstr = "";
         String nomeCen = "";
-        if (gp.getEstrategiaAtual() != null){
+        if (gp.getEstrategiaAtual() != null) {
             nomeEstr = gp.getEstrategiaAtual().getNomeEstrategia();
         } else {
             nomeEstr = "Nenhuma selecionada";
         }
-        if (gp.getCenarioAtual() != null){
+        if (gp.getCenarioAtual() != null) {
             nomeCen = gp.getCenarioAtual().getNome();
         } else {
             nomeCen = "Não definido";
@@ -133,114 +190,168 @@ public class Main {
             System.out.println("Saindo...");
             System.exit(0);
         } else {
-            System.out.println("[ERRO]  Opção inválida! Tente novamente.");
+            throw new PlantaException("Opção inválida! Tente novamente.");
         }
     }
 
-    //SUBMENUS: 
-
+    /**
+     * Submenu de atualização de demandas.
+     */
     private static void submenuAtualizarDemandas() {
         while (true) {
-            System.out.println(
-                  "\n===========================================================\n" +
-                    "|                     ATUALIZAR DEMANDAS                  |\n" +
-                    "===========================================================\n" +
-                    "1 - Atualizar demanda de Barra de chocolate\n" +
-                    "2 - Atualizar demanda de Ovo de Páscoa\n" +
-                    "3 - Atualizar demanda de Bombom de guarda-chuva\n" +
-                    "0 - Voltar ao Menu Principal\n" +
-                    "===========================================================\n" +
-                    "Escolha: ");
-            int op = teclado.nextInt();
-            if (op == 0){
-                break;
-            } else if (op == 1){
-                System.out.println("Entre com a nova demanda:");
-                int dem = teclado.nextInt();
-                gp.atualizarDemanda(0, dem);
-            } else if (op == 2){
-                System.out.println("Entre com a nova demanda:");
-                int dem = teclado.nextInt();
-                gp.atualizarDemanda(1, dem);
-            } else if (op == 3){
-                System.out.println("Entre com a nova demanda:");
-                int dem = teclado.nextInt();
-                gp.atualizarDemanda(2, dem);
-            } else {
-                System.out.println("[ERRO] Opção inválida!");
+            try {
+                System.out.println(
+                      "\n===========================================================\n" +
+                        "|                     ATUALIZAR DEMANDAS                  |\n" +
+                        "===========================================================\n" +
+                        "1 - Atualizar demanda de Barra de chocolate\n" +
+                        "2 - Atualizar demanda de Ovo de Páscoa\n" +
+                        "3 - Atualizar demanda de Bombom de guarda-chuva\n" +
+                        "0 - Voltar ao Menu Principal\n" +
+                        "===========================================================\n" +
+                        "Escolha: ");
+                int op = teclado.nextInt();
+                if (op == 0) {
+                    break;
+                } else if (op == 1) {
+                    System.out.println("Entre com a nova demanda:");
+                    int dem = teclado.nextInt();
+                    gp.atualizarDemanda(0, dem);
+                } else if (op == 2) {
+                    System.out.println("Entre com a nova demanda:");
+                    int dem = teclado.nextInt();
+                    gp.atualizarDemanda(1, dem);
+                } else if (op == 3) {
+                    System.out.println("Entre com a nova demanda:");
+                    int dem = teclado.nextInt();
+                    gp.atualizarDemanda(2, dem);
+                } else {
+                    throw new PlantaException("Opção inválida!");
+                }
+            } catch (PlantaException e) {
+                exibirMensagemErro(e.getMessage());
+            } catch (InputMismatchException e) {
+                teclado.nextLine();
+                exibirMensagemErro("Entrada inválida! Digite apenas valores numéricos.");
             }
         }
     }
 
+    /**
+     * Submenu de fabricação de demandas.
+     */
     private static void submenuFabricar() {
         while (true) {
-            System.out.println(
-                  "\n===========================================================\n" +
-                    "|                     FABRICAR DEMANDAS                   |\n" +
-                    "===========================================================\n" +
-                    "1 - Fabricar Barra de chocolate\n"+
-                    "2 - Fabricar Ovo de Páscoa\n"+
-                    "3 - Fabricar Bombom de guarda-chuva\n"+
-                    "4 - Executar Próxima Produção (Via Estratégia)\n"+
-                    "0 - Voltar ao Menu Principal\n" +
-                    "===========================================================\n" +
-                    "Escolha: ");
-            int op = teclado.nextInt();
-            if (op == 0){
-                break;
-            } else if (op == 1){
-                gp.fabricarDemanda(0);
-            } else if (op == 2){
-                gp.fabricarDemanda(1);
-            } else if (op == 3){
-                gp.fabricarDemanda(2);
-            } else if (op == 4){
-                gp.executarProximaProducao();
-            } else {
-                System.out.println("[ERRO] Opção inválida!");
+            try {
+                System.out.println(
+                      "\n===========================================================\n" +
+                        "|                     FABRICAR DEMANDAS                   |\n" +
+                        "===========================================================\n" +
+                        "1 - Fabricar Barra de chocolate\n"+
+                        "2 - Fabricar Ovo de Páscoa\n"+
+                        "3 - Fabricar Bombom de guarda-chuva\n"+
+                        "4 - Executar Próxima Produção (Via Estratégia)\n"+
+                        "0 - Voltar ao Menu Principal\n" +
+                        "===========================================================\n" +
+                        "Escolha: ");
+                int op = teclado.nextInt();
+                if (op == 0) {
+                    break;
+                } else if (op == 1) {
+                    gp.fabricarDemanda(0);
+                } else if (op == 2) {
+                    gp.fabricarDemanda(1);
+                } else if (op == 3) {
+                    gp.fabricarDemanda(2);
+                } else if (op == 4) {
+                    gp.executarProximaProducao();
+                } else {
+                    throw new PlantaException("Opção inválida!");
+                }
+            } catch (PlantaException e) {
+                exibirMensagemErro(e.getMessage());
+            } catch (InputMismatchException e) {
+                teclado.nextLine();
+                exibirMensagemErro("Entrada inválida! Digite apenas valores numéricos.");
             }
         }
     }
 
+    /**
+     * Submenu de consultas.
+     */
     private static void submenuConsultar() {
         while (true) {
-            System.out.println(
-                  "\n===========================================================\n" +
-                    "|                          CONSULTAR                      |\n" +
-                    "===========================================================\n" +
-                    "1 - Ver armazém\n"+
-                    "2 - Ver estoque de matéria-prima\n"+
-                    "0 - Voltar ao Menu Principal\n" +
-                    "===========================================================\n" +
-                    "Escolha: ");
-            int op = teclado.nextInt();
-            if (op == 0){
-                break;
-            } else if (op == 1){
-                gp.exibirArmazem();
-            } else if (op == 2){
-                System.out.println("Quantidade de matéria-prima em estoque: " + mp1.getQuantidade());
-            } else {
-                System.out.println("[ERRO] Opção inválida!");
+            try {
+                System.out.println(
+                      "\n===========================================================\n" +
+                        "|                          CONSULTAR                      |\n" +
+                        "===========================================================\n" +
+                        "1 - Ver armazém\n"+
+                        "2 - Ver estoque de matéria-prima\n"+
+                        "0 - Voltar ao Menu Principal\n" +
+                        "===========================================================\n" +
+                        "Escolha: ");
+                int op = teclado.nextInt();
+                if (op == 0) {
+                    break;
+                } else if (op == 1) {
+                    gp.exibirArmazem();
+                } else if (op == 2) {
+                    System.out.println("Quantidade de matéria-prima em estoque: " + mp1.getQuantidade() + " " + mp1.getUnidade());
+                } else {
+                    throw new PlantaException("Opção inválida!");
+                }
+            } catch (PlantaException e) {
+                exibirMensagemErro(e.getMessage());
+            } catch (InputMismatchException e) {
+                teclado.nextLine();
+                exibirMensagemErro("Entrada inválida! Digite apenas valores numéricos.");
             }
         }
     } 
-    
+
+    /**
+     * Menu de seleção de estratégia de produção.
+     */
     private static void escolherEstratégia() {
-        System.out.println("\nEscolha a Estratégia:\n"+
-                            "1 - Ordem de Chegada\n" +
-                            "2 - Maior Demanda\n" +
-                            "3 - Maximizar Produção\n" +
-                            "Escolha: " );
-        int op = teclado.nextInt();
-        if (op == 1) { 
-            gp.setEstrategia(new EstrategiaChocolento());
-        } else if (op == 2) {
-            gp.setEstrategia(new EstrategiaChocolumosa());
-        } else if (op == 3) { 
-            gp.setEstrategia(new EstrategiaMegalochocolatuda());
-        } else {
-            System.out.println("[ERRO] Estratégia inválida!");
+        try {
+            System.out.println("\nEscolha a Estratégia:\n"+
+                                "1 - Ordem de Chegada\n" +
+                                "2 - Maior Demanda\n" +
+                                "3 - Maximizar Produção\n" +
+                                "Escolha: " );
+            int op = teclado.nextInt();
+            if (op == 1) { 
+                gp.setEstrategia(new EstrategiaChocolento());
+            } else if (op == 2) {
+                gp.setEstrategia(new EstrategiaChocolumosa());
+            } else if (op == 3) { 
+                gp.setEstrategia(new EstrategiaMegalochocolatuda());
+            } else {
+                throw new PlantaException("Estratégia inválida!");
+            }
+        } catch (PlantaException e) {
+            exibirMensagemErro(e.getMessage());
+        } catch (InputMismatchException e) {
+            teclado.nextLine();
+            exibirMensagemErro("Entrada inválida! Digite apenas valores numéricos.");
         }
+    }
+
+    /**
+     * Apresenta a caixa de alerta de erro.
+     *
+     * @param mensagem Mensagem do erro a ser mostrada ao usuário.
+     */
+    private static void exibirMensagemErro(String mensagem) {
+        System.out.println("\n========================================");
+        System.out.println("ERRO");
+        System.out.println("========================================");
+        System.out.println(mensagem);
+        System.out.println("Nenhuma alteração foi realizada.");
+        System.out.println("Pressione ENTER para continuar...");
+        teclado.nextLine();
+        teclado.nextLine();
     }
 }

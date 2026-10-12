@@ -1,18 +1,47 @@
 import java.util.Random;
 
+/**
+ * Classe abstrata que representa a estrutura e comportamento base de uma máquina da fábrica.
+ * Implementa {@link Auditavel} para permitir diagnósticos e relatórios de saúde e falhas.
+ * 
+ * @author Laura Póvoas
+ */
 public abstract class Maquina implements Auditavel {
-    // Atributos:
-    private String nome; // Nome da máquina;
-    private boolean ligada; // Indica se a máquina está ligada;
-    private double capacidadeMaxima; // Capacidade máxima de processamento por ciclo;
-    private float probabilidadeFalha; // Chance de falha;
-    private float custoOperacao; // Custo por operação;
-    protected Random random;
-    private int saude; // Desgaste da máquina.
 
-    // Construtor:
-    public Maquina(String nome, double capacidadeMaxima, float probabilidadeFalha,
-            float custoOperacao) {
+    /** Nome identificador da máquina. */
+    private String nome;
+
+    /** Indica se a máquina está ligada. */
+    private boolean ligada;
+
+    /** Capacidade máxima de processamento. */
+    private double capacidadeMaxima;
+
+    /** Probabilidade base de ocorrência de falhas. */
+    private float probabilidadeFalha;
+
+    /** Custo financeiro por operação realizada. */
+    private float custoOperacao;
+
+    /** Gerador de números aleatórios para simulação de eventos e desgastes. */
+    protected Random random;
+
+    /** Saúde atual/nível de integridade física da máquina (0 a 100). */
+    private int saude;
+
+    /**
+     * Instancia uma nova máquina configurando suas especificações.
+     *
+     * @param nome Nome da máquina.
+     * @param capacidadeMaxima Capacidade limite.
+     * @param probabilidadeFalha Probabilidade inicial de falha.
+     * @param custoOperacao Custo em Reais por ciclo executado.
+     * @throws PlantaException se a capacidade máxima for menor ou igual a zero.
+     */
+    public Maquina(String nome, double capacidadeMaxima, float probabilidadeFalha, float custoOperacao) {
+        if (capacidadeMaxima <= 0) {
+            throw new PlantaException("A capacidade máxima da máquina deve ser superior a zero.");
+        }
         this.nome = nome;
         this.ligada = false;
         this.capacidadeMaxima = capacidadeMaxima;
@@ -22,89 +51,135 @@ public abstract class Maquina implements Auditavel {
         this.saude = 100;
     }
 
-    // Da interface Auditável:
+    /**
+     * Gera o relatório de diagnóstico do equipamento.
+     *
+     * @return {@link String} detalhando tipo, taxa de falha e saúde.
+     */
+    @Override
     public String gerarRelatorioDiagnostico() {
         return "[Máquina " + this.nome + "], Tipo: " + getTipo() + ", Prob. de Falha: "
-                + this.probabilidadeFalha * 100 + "%"
+                + (this.probabilidadeFalha * 100) + "%"
                 + ", Saúde da Máquina: " + getSaude()
                 + ", Precisa de Manutenção: " + (precisaManutencao() ? "SIM" : "NÃO");
     }
 
+    /**
+     * Avalia se a máquina necessita de reparo preventivo ou corretivo.
+     *
+     * @return {@code true} se a probabilidade de falha for elevada ou a saúde estiver abaixo de 20.
+     */
+    @Override
     public boolean precisaManutencao() {
-        if (this.probabilidadeFalha >= 0.6f || this.saude < 20) { // verifica prob. falha associada a saúde
-            return true;
-        } else {
-            return false;
-        }
+        return this.probabilidadeFalha >= 0.6f || this.saude < 20;
     }
 
-    // Métodos Abstratos:
+    /**
+     * Processa a etapa fabril em um determinado produto sob as regras de um cenário.
+     *
+     * @param produto Produto sendo processado.
+     * @param cenario Cenário de operação ativo.
+     * @throws MaquinaIndisponivelException se a máquina estiver desligada ou quebrada.
+     */
     public abstract void processar(Produto produto, Cenario cenario);
 
-    public abstract String getTipo();// Retorna o tipo da máquina.
+    /**
+     * Retorna a descrição do tipo da máquina.
+     *
+     * @return {@link String} com a categoria do equipamento.
+     */
+    public abstract String getTipo();
 
-    // Métodos Concretos:
-    // Liga a máquina:
+    /** Liga a máquina. */
     public void ligar() {
         this.ligada = true;
     }
 
-    // Desliga a máquina:
+    /** Desliga a máquina. */
     public void desligar() {
         this.ligada = false;
     }
 
+    /**
+     * Verifica se o equipamento está ligado.
+     *
+     * @return {@code true} se ligada; {@code false} se desligada.
+     */
     public boolean estaLigada() {
         return this.ligada;
     }
 
+    /**
+     * Obtém o nome da máquina.
+     *
+     * @return O nome cadastrado.
+     */
     public String getNome() {
         return this.nome;
     }
 
+    /**
+     * Obtém a capacidade máxima.
+     *
+     * @return A capacidade.
+     */
     public double getCapacidadeMaxima() {
         return this.capacidadeMaxima;
     }
 
+    /**
+     * Obtém o custo de operação.
+     *
+     * @return Custo por ciclo.
+     */
     public float getCustoOperacao() {
         return this.custoOperacao;
     }
 
-    // Método protegido para checagem aleatória de falhas:
+    /**
+     * Checa aleatoriamente se ocorreu uma falha, considerando a taxa do cenário.
+     *
+     * @param cenario Cenário ativo.
+     * @return {@code true} se uma falha ocorreu.
+     */
     protected boolean verificarFalha(Cenario cenario) {
-        float fator;
-        if (cenario != null){ //incorpora o cenário nas falhas
-            fator = cenario.getFalha();
-        } else {
-            fator = 1.0f;
-        }
-        if (random.nextDouble() < (probabilidadeFalha * fator)) {
-            return true;
-        }
-        return false;
+        float fator = (cenario != null) ? cenario.getFalha() : 1.0f;
+        return random.nextDouble() < (probabilidadeFalha * fator);
     }
 
+    /**
+     * Obtém o índice de saúde da máquina.
+     *
+     * @return Valor inteiro entre 0 e 100.
+     */
     public int getSaude() {
         return this.saude;
     }
 
-    public void reparar(){//repara a máq. pra restaurar a saúde em 100
+    /** Restaura o nível de saúde da máquina para 100. */
+    public void reparar() {
         this.saude = 100;
     }
 
-    protected void aplicaDesgaste(int valor, Cenario cenario){// Desgaste
-        int fatorDes;
-         if (cenario != null){ //incorpora o cenário nos desgastes
-            fatorDes = cenario.getDesgaste();
-        } else {
-            fatorDes = 1;
-        }
+    /**
+     * Aplica um nível de desgaste/dano à saúde da máquina de acordo com o cenário.
+     *
+     * @param valor Quantidade de desgaste a ser subtraída.
+     * @param cenario Cenário ativo.
+     */
+    protected void aplicaDesgaste(int valor, Cenario cenario) {
+        int fatorDes = (cenario != null) ? cenario.getDesgaste() : 1;
         this.saude -= (valor * fatorDes);
-        if (this.saude < 0) { //assegura que a vida não seja negativa
+        if (this.saude < 0) {
             this.saude = 0;
         }
     }
 
+    /**
+     * Define o valor numérico da saúde da máquina.
+     *
+     * @param saude Novo nível de saúde.
+     */
     public void setSaude(int saude) {
         this.saude = saude;
     }
