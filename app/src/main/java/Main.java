@@ -19,19 +19,22 @@ public class Main {
     /** Produto 2: Chocolate Meia Boca. */
     static Produto p2;
 
-    /** Produto 3: Chocolate Seboso. */
+    /** Produto 3: Chocolate Seboso.*/
     static Produto p3;
 
-    /** Esteira transportadora da planta. */
+    /** Esteira transportadora da planta.*/
     static Esteira e1;
 
-    /** Gerenciador central de produção. */
+    /** Gerenciador central de produção.*/
     static GerenciadorProducao gp;
+
+    /** Setor de Processamento (Agrupador). */
+    static SetorDeProcessamento setorProcessamento;
 
     /** Lista de demandas de chocolates. */
     static ArrayList<Demanda> demandas;
 
-    /** Leitor de entrada via console. */
+    /** Leitor de entrada via teclado. */
     static Scanner teclado = new Scanner(System.in);
 
     /** Cenário de operação selecionado. */
@@ -113,8 +116,12 @@ public class Main {
         p3 = new ChocolateSeboso(3, "Bombom de guarda-chuva", "BQ1");
         System.out.println(p3.getId() + " - " + p3.getNome() + " (Matéria-prima necessária: " + p3.getQuantidadeMateriaPrimaNecessaria() + " kg)");
 
+        // Instanciação da máquina Todo e Agrupador
+        setorProcessamento = new SetorDeProcessamento("Setor Principal de Mistura");
+        MaquinaDeProcessamento m1 = new MaquinaDeProcessamento("Batedeira industrial", 2.0f, 1000, 3);
+        setorProcessamento.adicionarMaquina(m1);
+
         ArrayList<Maquina> maquinas = new ArrayList<>();
-        Maquina m1 = new MaquinaDeProcessamento("Batedeira", 2, 1000);
         Maquina m2 = new MaquinaEmbaladora("Embaladora", 1, 1000);
         Maquina m3 = new MaquinaInspecaoQualidade("Vigilância Sanitária", 3);
 
@@ -179,13 +186,16 @@ public class Main {
         } else if (op == 4) {
             escolherEstratégia();
         } else if (op == 5) {
+            System.out.println("\n--- AUDITORIA DE SISTEMA ---");
             gp.gerarAuditoriaGeral();
+            System.out.println(setorProcessamento.gerarRelatorioDiagnostico());
         } else if (op == 6) {
             System.out.println("Entre com a quantidade de matéria-prima a ser comprada:");
             double qtd1 = teclado.nextDouble();
             gp.comprarMateriaPrima(qtd1);
         } else if (op == 7) {
             gp.repararMaquinas();
+            setorProcessamento.repararTodas();
         } else if (op == 0) {
             System.out.println("Saindo...");
             System.exit(0);
@@ -194,9 +204,7 @@ public class Main {
         }
     }
 
-    /**
-     * Submenu de atualização de demandas.
-     */
+    /** Submenu de atualização de demandas. */
     private static void submenuAtualizarDemandas() {
         while (true) {
             try {
@@ -237,9 +245,7 @@ public class Main {
         }
     }
 
-    /**
-     * Submenu de fabricação de demandas.
-     */
+    /** Submenu de fabricação de demandas. */
     private static void submenuFabricar() {
         while (true) {
             try {
@@ -277,9 +283,7 @@ public class Main {
         }
     }
 
-    /**
-     * Submenu de consultas.
-     */
+    /** Submenu de consultas. */
     private static void submenuConsultar() {
         while (true) {
             try {
@@ -311,9 +315,7 @@ public class Main {
         }
     } 
 
-    /**
-     * Menu de seleção de estratégia de produção.
-     */
+    /** Menu de seleção de estratégia de produção. */
     private static void escolherEstratégia() {
         try {
             System.out.println("\nEscolha a Estratégia:\n"+
@@ -339,11 +341,7 @@ public class Main {
         }
     }
 
-    /**
-     * Apresenta a caixa de alerta de erro.
-     *
-     * @param mensagem Mensagem do erro a ser mostrada ao usuário.
-     */
+    /** Apresenta a caixa de alerta de erro. */
     private static void exibirMensagemErro(String mensagem) {
         System.out.println("\n========================================");
         System.out.println("ERRO");

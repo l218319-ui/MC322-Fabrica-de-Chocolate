@@ -63,7 +63,7 @@ public abstract class Produto implements Auditavel {
     }
 
     /**
-     * Informa se o produto apresenta problemas que demandam verificação.
+     * Informa se o produto precisa de manutenção.
      *
      * @return {@code true} se a chance de falha acumulada for alta ou a qualidade baixa.
      */
@@ -90,7 +90,7 @@ public abstract class Produto implements Auditavel {
     public abstract float calcularTempoProducao();
 
     /**
-     * Obtém a categoria descritiva do produto.
+     * Obtém o tipo do produto.
      *
      * @return {@link String} com o tipo.
      */

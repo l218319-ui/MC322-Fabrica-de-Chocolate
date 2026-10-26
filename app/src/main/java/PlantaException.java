@@ -1,5 +1,5 @@
 /**
- * Exceção base do domínio da fábrica/planta de produção de chocolates.
+ * Exceção base do domínio da planta de produção de chocolates.
  * Serve como superclasse para todas as exceções de negócio do sistema.
  * 
  * @author Laura Póvoas
