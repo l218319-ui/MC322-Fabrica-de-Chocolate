@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<planta>
+  <orcamento>99724.0</orcamento>
+  <materiasPrimas>
+    <materiaPrima id="1">
+      <nome>Manteiga de Cacau</nome>
+      <quantidade>810.0</quantidade>
+      <unidade>kg</unidade>
+      <custoPorLote>3.0</custoPorLote>
+    </materiaPrima>
+  </materiasPrimas>
+  <maquinas>
+    <maquina classe="br.unicamp.ic.MC322.model.MaquinaDeProcessamento">
+      <nome>Batedeira industrial</nome>
+      <ligada>false</ligada>
+      <capacidadeMaxima>1000.0</capacidadeMaxima>
+      <probabilidadeFalha>0.0</probabilidadeFalha>
+      <custoOperacao>2.0</custoOperacao>
+      <saude>79</saude>
+      <componentes>
+        <motor emFuncionamento="false" potencia="150.0" saude="79"/>
+        <bicoInjetor entupido="false" saude="79" vazao="50.0"/>
+        <bracosBatedores>
+          <bracoBatedor idBraco="1" saude="79" velocidadeRotacao="300.0"/>
+          <bracoBatedor idBraco="2" saude="79" velocidadeRotacao="300.0"/>
+          <bracoBatedor idBraco="3" saude="79" velocidadeRotacao="300.0"/>
+        </bracosBatedores>
+      </componentes>
+    </maquina>
+    <maquina classe="br.unicamp.ic.MC322.model.MaquinaEmbaladora">
+      <nome>Embaladora</nome>
+      <ligada>false</ligada>
+      <capacidadeMaxima>1000.0</capacidadeMaxima>
+      <probabilidadeFalha>0.0</probabilidadeFalha>
+      <custoOperacao>1.0</custoOperacao>
+      <saude>84</saude>
+    </maquina>
+    <maquina classe="br.unicamp.ic.MC322.model.MaquinaInspecaoQualidade">
+      <nome>Vigilância Sanitária</nome>
+      <ligada>false</ligada>
+      <capacidadeMaxima>100.0</capacidadeMaxima>
+      <probabilidadeFalha>0.04</probabilidadeFalha>
+      <custoOperacao>3.0</custoOperacao>
+      <saude>83</saude>
+    </maquina>
+  </maquinas>
+  <demandas>
+    <demanda>
+      <produto classe="br.unicamp.ic.MC322.model.ChocolatePremium" id="1" lote="AQ1" mpNecessaria="9.0" nome="Barra de chocolate"/>
+      <quantidadeProdutos>10</quantidadeProdutos>
+      <status>CONCLUIDA</status>
+    </demanda>
+    <demanda>
+      <produto classe="br.unicamp.ic.MC322.model.ChocolateMeiaBoca" id="2" lote="MQ1" mpNecessaria="7.0" nome="Ovo de Páscoa"/>
+      <quantidadeProdutos>20</quantidadeProdutos>
+      <status>PENDENTE</status>
+    </demanda>
+    <demanda>
+      <produto classe="br.unicamp.ic.MC322.model.ChocolateSeboso" id="3" lote="BQ1" mpNecessaria="5.0" nome="Bombom de guarda-chuva"/>
+      <quantidadeProdutos>30</quantidadeProdutos>
+      <status>PENDENTE</status>
+    </demanda>
+  </demandas>
+</planta>

@@ -33,8 +33,7 @@ java {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass = "Main"
+    mainClass.set("br.unicamp.ic.MC322.Main")
 }
 
 tasks.named<Test>("test") {
