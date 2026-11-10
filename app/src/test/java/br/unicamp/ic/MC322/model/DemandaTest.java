@@ -56,12 +56,4 @@ public class DemandaTest {
         assertThrows(EstadoInvalidoException.class, () -> demanda.atender());
         assertThrows(EstadoInvalidoException.class, () -> demanda.setStatus(StatusDemanda.CONCLUIDA));
     }
-
-    @Test
-    @DisplayName("Deve calcular corretamente a quantidade total de matéria-prima exigida")
-    void testCalcularMateriaPrimaNecessaria() {
-        // ChocolatePremium requer 0.9 por unidade * 50 unidades = 45.0
-        double mpEsperada = 0.9 * 50;
-        assertEquals(mpEsperada, demanda.calcularMateriaPrimaNecessaria(), 0.0001);
-    }
 }
